@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تسجيل الدخول - fsociety</title>
+  <link rel="icon" type="image/x-icon" href="/fsociety.ico">
+  <link rel="shortcut icon" type="image/x-icon" href="/fsociety.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #00e676;
+      --error-color: #ff4444;
+      --card-bg: rgba(255, 255, 255, 0.05);
+      --text-color: #fff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Tajawal', sans-serif;
+    }
+
+    body {
+      background: #1a1a1a;
+      color: var(--text-color);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .login-container {
+      background: var(--card-bg);
+      padding: clamp(20px, 5vw, 40px);
+      border-radius: 15px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .login-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .login-header h1 {
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+    }
+
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      position: relative;
+    }
+
+    .form-group label {
+      font-weight: bold;
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .form-group input {
+      padding: 12px;
+      padding-right: 35px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-color);
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 2px rgba(0, 230, 118, 0.2);
+    }
+
+    .form-group i {
+      position: absolute;
+      left: 12px;
+      top: 38px;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .submit-btn {
+      background: var(--primary-color);
+      color: #000;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 1rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .submit-btn:hover {
+      background: #00ff9d;
+      transform: translateY(-2px);
+    }
+
+    .submit-btn:active {
+      transform: translateY(0);
+    }
+
+    .submit-btn::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 5px;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.5);
+      opacity: 0;
+      border-radius: 100%;
+      transform: scale(1, 1) translate(-50%);
+      transform-origin: 50% 50%;
+    }
+
+    .submit-btn:focus:not(:active)::after {
+      animation: ripple 1s ease-out;
+    }
+
+    @keyframes ripple {
+      0% {
+        transform: scale(0, 0);
+        opacity: 0.5;
+      }
+      100% {
+        transform: scale(100, 100);
+        opacity: 0;
+      }
+    }
+
+    .error-message {
+      color: var(--error-color);
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      padding: 10px;
+      background: rgba(255, 68, 68, 0.1);
+      border-radius: 8px;
+      border: 1px solid rgba(255, 68, 68, 0.2);
+      display: none;
+    }
+
+    .error-message.show {
+      display: block;
+      animation: shake 0.5s ease-in-out;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
+    @media (max-width: 480px) {
+      .login-container {
+        padding: 20px;
+        margin: 15px;
+      }
+
+      .form-group input {
+        padding: 10px;
+        padding-right: 30px;
+      }
+
+      .submit-btn {
+        padding: 10px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .submit-btn::after {
+        display: none;
+      }
+      
+      .error-message {
+        animation: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-header">
+      <h1>تسجيل الدخول</h1>
+      <p>الرجاء تسجيل الدخول للوصول إلى لوحة التحكم</p>
+    </div>
+
+    <form class="login-form" action="/login" method="POST">
+      <div class="form-group">
+        <label for="username">اسم المستخدم</label>
+        <input type="text" id="username" name="username" required autocomplete="username">
+        <i>👤</i>
+      </div>
+
+      <div class="form-group">
+        <label for="password">كلمة المرور</label>
+        <input type="password" id="password" name="password" required autocomplete="current-password">
+        <i>🔒</i>
+      </div>
+
+      <button type="submit" class="submit-btn">تسجيل الدخول</button>
+
+      <div id="errorMessage" class="error-message <%= locals.error ? 'show' : '' %>">
+        <%= locals.error || '' %>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    // تحسين تجربة المستخدم عند تقديم النموذج
+    document.querySelector('.login-form').addEventListener('submit', function(e) {
+      const submitBtn = this.querySelector('.submit-btn');
+      submitBtn.style.pointerEvents = 'none';
+      submitBtn.style.opacity = '0.7';
+      submitBtn.textContent = 'جاري تسجيل الدخول...';
+    });
+  </script>
+</body>
+</html> 

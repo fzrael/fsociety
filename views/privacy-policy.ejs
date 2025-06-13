@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سياسة الخصوصية - 3roShleak</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        :root {
+            --primary-color: #00e676;
+            --text-color: #ffffff;
+            --bg-color: #121212;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: var(--bg-color);
+            margin: 0;
+            padding: 0;
+        }
+
+        .privacy-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .privacy-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: var(--card-bg);
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
+        }
+
+        .privacy-header i {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .privacy-header h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .privacy-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .privacy-section {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease;
+        }
+
+        .privacy-section:hover {
+            transform: translateY(-5px);
+        }
+
+        .privacy-section h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        .privacy-section h2 i {
+            margin-left: 10px;
+            color: var(--primary-color);
+        }
+
+        .privacy-section p {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .privacy-section ul {
+            padding-right: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .privacy-section li {
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .privacy-section li i {
+            color: var(--primary-color);
+            margin-top: 5px;
+        }
+
+        .highlight {
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            background: var(--primary-color);
+            color: var(--bg-color);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border: none;
+            font-size: 1.5rem;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+        }
+
+        .back-to-home {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: var(--primary-color);
+            color: var(--bg-color);
+            text-decoration: none;
+            border-radius: 8px;
+            margin-top: 2rem;
+            font-weight: 500;
+            transition: transform 0.3s ease;
+        }
+
+        .back-to-home:hover {
+            transform: translateY(-2px);
+        }
+
+        .back-to-top i {
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 768px) {
+            .privacy-container {
+                padding: 1rem;
+            }
+
+            .privacy-header {
+                padding: 1.5rem;
+            }
+
+            .privacy-header h1 {
+                font-size: 2rem;
+            }
+
+            .privacy-section {
+                padding: 1.5rem;
+            }
+
+            .privacy-section h2 {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .privacy-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .privacy-section {
+                padding: 1rem;
+            }
+
+            .back-to-top {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="privacy-container">
+        <header class="privacy-header">
+            <i class="fas fa-shield-alt"></i>
+            <h1>سياسة الخصوصية</h1>
+            <p>نحن نقدر خصوصيتك ونلتزم بحماية بياناتك الشخصية</p>
+        </header>
+
+        <section class="privacy-section">
+            <h2><i class="fas fa-info-circle"></i> مقدمة</h2>
+            <p>نحن في <span class="highlight">fsociety</span> نلتزم بحماية مستخدمينا. تشرح هذه السياسة كيفية جمع واستخدام وحماية معلوماتك الشخصية عند استخدام خدماتنا.</p>
+        </section>
+
+        <section class="privacy-section">
+            <h2><i class="fas fa-database"></i> جمع المعلومات</h2>
+            <p>نقوم بجمع المعلومات التالية:</p>
+            <ul>
+                <li><i class="fas fa-envelope"></i> عناوين البريد الإلكتروني المستخدمة في عمليات البحث</li>
+                <li><i class="fas fa-key"></i> معلومات التراخيص وتفاصيل الاستخدام</li>
+                <li><i class="fas fa-user-shield"></i> بيانات تسجيل الدخول للمشرفين</li>
+                <li><i class="fas fa-laptop"></i> معلومات تقنية مثل نوع المتصفح ونظام التشغيل</li>
+            </ul>
+        </section>
+
+        <section class="privacy-section">
+            <h2><i class="fas fa-tasks"></i> استخدام المعلومات</h2>
+            <p>نستخدم المعلومات التي نجمعها للأغراض التالية:</p>
+            <ul>
+                <li><i class="fas fa-search"></i> تقديم خدمات البحث عن التسريبات</li>
+                <li><i class="fas fa-chart-line"></i> تحسين وتطوير خدماتنا</li>
+                <li><i class="fas fa-id-card"></i> إدارة التراخيص والحسابات</li>
+            </ul>
+        </section>
+
+        <section class="privacy-section">
+            <h2>حماية المعلومات</h2>
+            <p>نتخذ إجراءات أمنية صارمة لحماية معلوماتك، بما في ذلك:</p>
+            <ul>
+                <li>تشفير البيانات الحساسة</li>
+                <li>تقييد الوصول إلى المعلومات الشخصية</li>
+                <li>مراقبة منتظمة لأنظمتنا للكشف عن نقاط الضعف المحتملة</li>
+                <li>تحديثات أمنية دورية لأنظمتنا</li>
+            </ul>
+        </section>
+
+        <section class="privacy-section">
+            <h2>حقوق المستخدم</h2>
+            <p>لديك الحق في:</p>
+            <ul>
+                <li>الوصول إلى معلوماتك الشخصية</li>
+                <li>تصحيح معلوماتك غير الدقيقة</li>
+                <li>طلب حذف معلوماتك</li>
+                <li>الاعتراض على معالجة معلوماتك</li>
+            </ul>
+        </section>
+
+        <section class="privacy-section">
+            <h2>التواصل معنا</h2>
+            <p>إذا كان لديك أي أسئلة حول سياسة الخصوصية، يمكنك التواصل معنا عبر:</p>
+            <ul>
+                <li>البريد الإلكتروني: support@3roshleak.com</li>
+                <li>نموذج الاتصال على موقعنا</li>
+            </ul>
+        </section>
+
+        <div style="text-align: center;">
+            <a href="/" class="back-to-home">العودة إلى الصفحة الرئيسية</a>
+        </div>
+    </div>
+
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // زر العودة إلى الأعلى
+        const backToTopButton = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('visible');
+            } else {
+                backToTopButton.classList.remove('visible');
+            }
+        });
+
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+</html> 

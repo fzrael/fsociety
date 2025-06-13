@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحميل قاعدة البيانات</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="icon" type="image/x-icon" href="/fsociety.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="/fsociety.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #00e676;
+            --primary-dark: #00c853;
+            --dark-bg: #0a0a0a;
+            --card-bg: #111111;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-primary);
+            font-family: 'Tajawal', sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 450px;
+            margin: 0 auto;
+            flex: 1;
+        }
+
+        .download-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+        }
+
+        .title {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            transition: all 0.5s ease;
+        }
+
+        .form-group.hidden {
+            display: none;
+            opacity: 0;
+            margin: 0;
+            height: 0;
+        }
+
+        .form-input {
+            width: calc(100% - 2rem);
+            padding: 0.7rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            margin-bottom: 0.8rem;
+            text-align: center;
+            height: 40px;
+        }
+
+        .form-input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 230, 118, 0.2);
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: #000;
+            border: none;
+            padding: 0.7rem;
+            height: 40px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            width: calc(100% - 2rem);
+            margin: 0 auto;
+            justify-content: center;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .info-section {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .info-section.visible {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .info-card h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.3s ease;
+        }
+
+        .info-card h2:hover {
+            opacity: 0.8;
+        }
+
+        .info-card h2 i.toggle-icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .info-card h2.collapsed i.toggle-icon {
+            transform: rotate(-180deg);
+        }
+
+        .info-content {
+            max-height: 2000px;
+            transition: all 0.5s ease;
+            opacity: 1;
+        }
+
+        .info-content.collapsed {
+            max-height: 0;
+            opacity: 0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .info-item {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 14px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .info-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+        }
+
+        .info-item i {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .info-item h3 {
+            color: var(--text-primary);
+            margin: 0.8rem 0;
+            font-size: 1.2rem;
+        }
+
+        .info-item p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .magnet-section {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .magnet-title {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            font-size: 1.3rem;
+        }
+
+        .download-steps {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .step {
+            background: var(--card-bg);
+            padding: 1.2rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .step:hover {
+            border-color: var(--primary-color);
+            transform: translateX(-5px);
+        }
+
+        .step-number {
+            background: var(--primary-color);
+            color: #000;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .magnet-input {
+            width: calc(100% - 2rem);
+            padding: 0.6rem 0.8rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: monospace;
+            font-size: 0.85rem;
+            margin-bottom: 0.8rem;
+            cursor: text;
+            text-align: left;
+            direction: ltr;
+            height: 36px;
+        }
+
+        .copy-btn {
+            background: var(--primary-color);
+            color: #000;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            height: 36px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .copy-btn i {
+            font-size: 0.9rem;
+        }
+
+        .copy-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .alert {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            color: #fff;
+            animation: slideIn 0.3s ease;
+            z-index: 1000;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .alert-success {
+            background: var(--primary-color);
+        }
+
+        .alert-error {
+            background: #ff1744;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* تحسينات للشاشات المختلفة */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem 0;
+            }
+
+            .container {
+                width: 95%;
+                max-width: 400px;
+            }
+
+            .download-card {
+                padding: 1.2rem;
+            }
+
+            .title {
+                font-size: 1.6rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .magnet-section {
+                padding: 1.5rem;
+            }
+
+            .magnet-title {
+                font-size: 1.2rem;
+                margin-bottom: 1.2rem;
+            }
+
+            .magnet-input {
+                height: 34px;
+                font-size: 0.8rem;
+                padding: 0.5rem 0.8rem;
+            }
+
+            .copy-btn {
+                height: 34px;
+                font-size: 0.85rem;
+                padding: 0.5rem 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                width: 92%;
+            }
+
+            .download-card {
+                padding: 1rem;
+            }
+
+            .form-input, 
+            .btn-primary,
+            .magnet-input,
+            .copy-btn {
+                height: 36px;
+                font-size: 0.85rem;
+                width: calc(100% - 1.5rem);
+            }
+
+            .info-card {
+                padding: 1.5rem;
+            }
+
+            .info-item {
+                padding: 1.2rem;
+            }
+
+            .step {
+                padding: 1rem;
+            }
+
+            .magnet-section {
+                padding: 1.2rem;
+            }
+
+            .magnet-input,
+            .copy-btn {
+                height: 32px;
+                font-size: 0.75rem;
+                width: calc(100% - 1.5rem);
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 700px;
+            }
+
+            .info-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .upgrade-btn {
+            background: rgba(255, 59, 48, 0.1) !important;
+            color: #ff3b30 !important;
+            border: 1px solid #ff3b30 !important;
+        }
+
+        .upgrade-btn:hover {
+            background: rgba(255, 59, 48, 0.2) !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="download-card">
+            <h1 class="title">تحميل قاعدة البيانات</h1>
+            
+            <div class="form-group">
+                <input type="text" id="licenseKey" class="form-input" placeholder="أدخل مفتاح الترخيص">
+                <button id="verifyLicense" class="btn-primary">
+                    <i class="fas fa-key"></i>
+                    التحقق من الترخيص
+                </button>
+            </div>
+
+            <div id="infoSection" class="info-section">
+                <div class="info-card">
+                    <h2 onclick="toggleInfoCard(this)">
+                        <i class="fas fa-database"></i>
+                        معلومات قاعدة البيانات
+                        <i class="fas fa-chevron-up toggle-icon" style="margin-right: auto;"></i>
+                    </h2>
+                    <div class="info-content">
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <i class="fas fa-hdd"></i>
+                                <h3>حجم الملف</h3>
+                                <p>364GB</p>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-users"></i>
+                                <h3>عدد السجلات</h3>
+                                <p>10 مليار</p>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-calendar-alt"></i>
+                                <h3>تاريخ التسريب</h3>
+                                <p>2011-2025</p>
+                            </div>
+                        </div>
+
+                        <div class="data-details" style="margin-top: 2rem; background: rgba(255, 255, 255, 0.05); border-radius: 12px; padding: 1.5rem;">
+                            <h3 style="color: var(--primary-color); margin-bottom: 1rem; font-size: 1.2rem;">
+                                <i class="fas fa-info-circle"></i>
+                                محتويات البيانات
+                            </h3>
+                            <div style="color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.6;">
+                                <p>تشمل البيانات المسربة:</p>
+                                <ul style="list-style-type: none; padding: 0; margin: 0.5rem 0;">
+                                    <li style="margin: 0.5rem 0;"><i class="fas fa-envelope" style="color: var(--primary-color); margin-left: 0.5rem;"></i> عنوان البريد الإلكتروني</li>
+                                    <li style="margin: 0.5rem 0;"><i class="fas fa-key" style="color: var(--primary-color); margin-left: 0.5rem;"></i> كلمات المرور الغير مشفره والمشفره (MD5, SHA1, SHA256)</li>
+                                    <li style="margin: 0.5rem 0;"><i class="fas fa-user" style="color: var(--primary-color); margin-left: 0.5rem;"></i> أسماء المستخدمين</li>
+                                    <li style="margin: 0.5rem 0;"><i class="fas fa-network-wired" style="color: var(--primary-color); margin-left: 0.5rem;"></i> عناوين IP</li>
+                                    <li style="margin: 0.5rem 0;"><i class="fas fa-phone" style="color: var(--primary-color); margin-left: 0.5rem;"></i> أرقام الهواتف</li>
+                                    
+
+                                </ul>
+                            </div>
+
+                            <h3 style="color: var(--primary-color); margin: 1.5rem 0 1rem; font-size: 1.2rem;">
+                                <i class="fas fa-globe"></i>
+                                ومن ضمن الملفات 
+                            </h3>
+                            <div class="platforms-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+                                <div class="platform-item" style="background: var(--card-bg); padding: 0.8rem; border-radius: 8px; text-align: center; border: 1px solid var(--border-color);">
+                                    <i class="fas fa-shopping-bag" style="color: var(--primary-color);"></i>
+                                    <span style="margin-right: 0.5rem;">SHEIN</span>
+                                </div>
+                                <div class="platform-item" style="background: var(--card-bg); padding: 0.8rem; border-radius: 8px; text-align: center; border: 1px solid var(--border-color);">
+                                    <i class="fab fa-linkedin" style="color: var(--primary-color);"></i>
+                                    <span style="margin-right: 0.5rem;">LinkedIn</span>
+                                </div>
+                                <div class="platform-item" style="background: var(--card-bg); padding: 0.8rem; border-radius: 8px; text-align: center; border: 1px solid var(--border-color);">
+                                    <i class="fab fa-yahoo" style="color: var(--primary-color);"></i>
+                                    <span style="margin-right: 0.5rem;">Yahoo</span>
+                                </div>
+                                <div class="platform-item" style="background: var(--card-bg); padding: 0.8rem; border-radius: 8px; text-align: center; border: 1px solid var(--border-color);">
+                                    <i class="fab fa-twitter" style="color: var(--primary-color);"></i>
+                                    <span style="margin-right: 0.5rem;">Twitter</span>
+                                </div>
+                                <div class="platform-item" style="background: var(--card-bg); padding: 0.8rem; border-radius: 8px; text-align: center; border: 1px solid var(--border-color);">
+                                    <i class="fab fa-adobe" style="color: var(--primary-color);"></i>
+                                    <span style="margin-right: 0.5rem;">Adobe</span>
+                                </div>
+                                <div class="platform-item" style="background: var(--card-bg); padding: 0.8rem; border-radius: 8px; text-align: center; border: 1px solid var(--border-color);">
+                                    <i class="fas fa-globe-asia" style="color: var(--primary-color);"></i>
+                                    <span style="margin-right: 0.5rem;">Tencent</span>
+                                </div>
+                                <div class="platform-item" style="background: var(--card-bg); padding: 0.8rem; border-radius: 8px; text-align: center; border: 1px solid var(--border-color);">
+                                    <i class="fas fa-play" style="color: var(--primary-color);"></i>
+                                    <span style="margin-right: 0.5rem;">Netflix</span>
+                                </div>
+                                <div class="platform-item" style="background: var(--card-bg); padding: 0.8rem; border-radius: 8px; text-align: center; border: 1px solid var(--border-color);">
+                                    <i class="fab fa-snapchat" style="color: var(--primary-color);"></i>
+                                    <span style="margin-right: 0.5rem;">Snapchat</span>
+                                </div>
+                                <div class="platform-item" style="background: var(--card-bg); padding: 0.8rem; border-radius: 8px; text-align: center; border: 1px solid var(--border-color);">
+                                    <i class="fab fa-instagram" style="color: var(--primary-color);"></i>
+                                    <span style="margin-right: 0.5rem;">Instagram</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="magnet-section">
+                    <h2 class="magnet-title">
+                        <i class="fas fa-magnet"></i>
+                        رابط التورنت
+                    </h2>
+                    
+                    <div class="download-steps">
+                        <div class="step">
+                            <span class="step-number">1</span>
+                            <span>قم بتثبيت برنامج µTorrent او qBittorrent</span>
+                        </div>
+                        <div class="step">
+                            <span class="step-number">2</span>
+                            <span>انسخ رابط التورنت أدناه</span>
+                        </div>
+                        <div class="step">
+                            <span class="step-number">3</span>
+                            <span>الصق الرابط في برنامج التورنت</span>
+                        </div>
+                        <div class="step">
+                            <span class="step-number">4</span>
+                            <span>اختار الملفات التي تريد تحميلها</span>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 2rem;">
+                        <input type="text" id="magnetLink" class="magnet-input" readonly>
+                        <button class="copy-btn" onclick="copyMagnetLink()">
+                            <i class="fas fa-copy"></i>
+                            نسخ الرابط
+                        </button>
+                    </div>
+
+                    <div class="safety-section" style="margin-top: 2.5rem; text-align: right;">
+                        <h3 style="color: var(--primary-color); font-size: 1.2rem; display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1.2rem;">
+                            <i class="fas fa-shield-alt"></i>
+                            هل روابط التورنت آمنة؟
+                        </h3>
+                        
+                        <div class="safety-cards" style="display: grid; gap: 1rem;">
+                            <div class="safety-card" style="background: rgba(255, 255, 255, 0.05); border-radius: 12px; padding: 1.2rem; border: 1px solid var(--border-color);">
+                                <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                                    <i class="fas fa-fingerprint" style="color: var(--primary-color); font-size: 1.4rem; margin-top: 0.2rem;"></i>
+                                    <div>
+                                        <h4 style="color: var(--text-primary); margin: 0 0 0.5rem 0; font-size: 1.1rem;">التحقق من السلامة</h4>
+                                        <p style="color: var(--text-secondary); margin: 0; line-height: 1.6; font-size: 0.95rem;">
+                                            جميع روابط التورنت لدينا مشفرة ومحمية بتقنية التشفير المتقدمة، ويتم التحقق من سلامتها بشكل دوري.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="safety-card" style="background: rgba(255, 255, 255, 0.05); border-radius: 12px; padding: 1.2rem; border: 1px solid var(--border-color);">
+                                <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                                    <i class="fas fa-lock" style="color: var(--primary-color); font-size: 1.4rem; margin-top: 0.2rem;"></i>
+                                    <div>
+                                        <h4 style="color: var(--text-primary); margin: 0 0 0.5rem 0; font-size: 1.1rem;">حماية البيانات</h4>
+                                        <p style="color: var(--text-secondary); margin: 0; line-height: 1.6; font-size: 0.95rem;">
+                                            نستخدم بروتوكول Magnet URI الآمن لضمان نقل البيانات بشكل موثوق وآمن دون أي تدخل خارجي.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="safety-card" style="background: rgba(255, 255, 255, 0.05); border-radius: 12px; padding: 1.2rem; border: 1px solid var(--border-color);">
+                                <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                                    <i class="fas fa-check-circle" style="color: var(--primary-color); font-size: 1.4rem; margin-top: 0.2rem;"></i>
+                                    <div>
+                                        <h4 style="color: var(--text-primary); margin: 0 0 0.5rem 0; font-size: 1.1rem;">موثوقية المصدر</h4>
+                                        <p style="color: var(--text-secondary); margin: 0; line-height: 1.6; font-size: 0.95rem;">
+                                            جميع الملفات يتم مراجعتها والتحقق منها قبل النشر للتأكد من خلوها من أي برمجيات ضارة.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('verifyLicense').addEventListener('click', async () => {
+            const licenseKey = document.getElementById('licenseKey').value;
+            const infoSection = document.getElementById('infoSection');
+            const magnetLink = document.getElementById('magnetLink');
+            const formGroup = document.querySelector('.form-group');
+            
+            try {
+                const response = await fetch('/api/verify-license', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ licenseKey })
+                });
+
+                const data = await response.json();
+
+                if (data.valid) {
+                    formGroup.classList.add('hidden');
+                    infoSection.classList.add('visible');
+                    magnetLink.value = data.magnetLink;
+                    
+                    const copyButton = document.querySelector('.copy-btn');
+                    if (data.type === 'trial') {
+                        copyButton.innerHTML = '<i class="fas fa-arrow-up"></i> ترقية الترخيص';
+                        copyButton.onclick = () => window.location.href = '/pricing';
+                        copyButton.classList.add('upgrade-btn');
+                    } else {
+                        copyButton.innerHTML = '<i class="fas fa-copy"></i> نسخ الرابط';
+                        copyButton.onclick = copyMagnetLink;
+                        copyButton.classList.remove('upgrade-btn');
+                    }
+                    
+                    showAlert('تم التحقق من الترخيص بنجاح', 'success');
+                } else {
+                    showAlert(data.message || 'ترخيص غير صالح', 'error');
+                }
+            } catch (error) {
+                showAlert('حدث خطأ أثناء التحقق من الترخيص', 'error');
+            }
+        });
+
+        function copyMagnetLink() {
+            const magnetLink = document.getElementById('magnetLink');
+            magnetLink.select();
+            document.execCommand('copy');
+            showAlert('تم نسخ رابط التورنت بنجاح', 'success');
+        }
+
+        function showAlert(message, type) {
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                ${message}
+            `;
+            document.body.appendChild(alert);
+            setTimeout(() => alert.remove(), 3000);
+        }
+
+        function toggleInfoCard(header) {
+            const content = header.nextElementSibling;
+            header.classList.toggle('collapsed');
+            content.classList.toggle('collapsed');
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,1501 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة إدارة التراخيص - fsociety</title>
+  <link rel="icon" type="image/x-icon" href="/fsociety.ico">
+  <link rel="shortcut icon" type="image/x-icon" href="/fsociety.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --primary-color: #00e676;
+      --danger-color: #ff4444;
+      --warning-color: #ffa500;
+      --card-bg: rgba(255, 255, 255, 0.05);
+      --border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .admin-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .admin-header {
+      background: var(--card-bg);
+      padding: 1.5rem;
+      border-radius: 15px;
+      margin-bottom: 2rem;
+      border: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .admin-header h1 {
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      margin: 0;
+      color: var(--primary-color);
+    }
+
+    .header-buttons {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      min-width: 120px;
+      justify-content: center;
+    }
+
+    .btn-primary {
+      background: var(--primary-color);
+      color: #000;
+    }
+
+    .btn-primary:hover {
+      background: #00ff9d;
+      transform: translateY(-2px);
+    }
+
+    .btn-danger {
+      background: var(--danger-color);
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: #ff6666;
+    }
+
+    .dashboard-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      padding: 1.5rem;
+      border-radius: 15px;
+      border: 1px solid var(--border-color);
+      text-align: center;
+    }
+
+    .stat-card h3 {
+      color: var(--primary-color);
+      margin: 0 0 1rem 0;
+      font-size: 1.2rem;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: bold;
+    }
+
+    .charts-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .chart-card {
+      background: var(--card-bg);
+      padding: 1.5rem;
+      border-radius: 15px;
+      border: 1px solid var(--border-color);
+      min-height: 400px;
+    }
+
+    .chart-card h3 {
+      color: var(--primary-color);
+      margin: 0 0 1.5rem 0;
+      text-align: center;
+    }
+
+    .license-table-container {
+      background: var(--card-bg);
+      padding: 1.5rem;
+      border-radius: 15px;
+      border: 1px solid var(--border-color);
+      margin-top: 2rem;
+      overflow: hidden;
+    }
+
+    .table-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .search-box {
+      flex: 1;
+      max-width: 400px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background: rgba(255, 255, 255, 0.05);
+      color: white;
+    }
+
+    .license-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+    }
+
+    .license-table th {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 1rem;
+      text-align: right;
+      font-weight: bold;
+    }
+
+    .license-table td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 1rem;
+    }
+
+    .modal-content {
+      background: #1a1a1a;
+      padding: 2rem;
+      border-radius: 15px;
+      width: 100%;
+      max-width: 500px;
+      border: 1px solid var(--border-color);
+      position: relative;
+    }
+
+    .modal-content h2 {
+      color: var(--primary-color);
+      margin: 0 0 1.5rem 0;
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: white;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 0.8rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background: rgba(255, 255, 255, 0.05);
+      color: white;
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: flex-end;
+    }
+
+    @media (max-width: 768px) {
+      .admin-container {
+        padding: 1rem;
+      }
+
+      .admin-header {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .header-buttons {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .charts-container {
+        grid-template-columns: 1fr;
+      }
+
+      .license-table-container {
+        padding: 1rem;
+      }
+
+      .license-table {
+        display: block;
+        overflow-x: auto;
+      }
+
+      .table-header {
+        flex-direction: column;
+      }
+
+      .search-box {
+        max-width: 100%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .stat-card {
+        padding: 1rem;
+      }
+
+      .chart-card {
+        padding: 1rem;
+      }
+
+      .modal-content {
+        padding: 1rem;
+      }
+    }
+
+    .error-icon {
+      margin-bottom: 1rem;
+      color: var(--danger-color);
+    }
+    
+    .text-center {
+      text-align: center;
+    }
+
+    #errorMessage {
+      font-size: 1.1rem;
+      margin: 1rem 0;
+      color: var(--danger-color);
+    }
+
+    .active-row {
+      background-color: rgba(0, 166, 124, 0.1) !important;
+    }
+    
+    .suspended-row {
+      background-color: rgba(255, 193, 7, 0.1) !important;
+    }
+    
+    .expired-row {
+      background-color: rgba(220, 53, 69, 0.1) !important;
+    }
+
+    tr.active-row td {
+      color: #00a67c;
+    }
+    
+    tr.suspended-row td {
+      color: #ffc107;
+    }
+    
+    tr.expired-row td {
+      color: #dc3545;
+    }
+
+    .edit-btn, .delete-btn {
+      padding: 5px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin: 0 5px;
+    }
+
+    .edit-btn {
+      background-color: #00a67c;
+      color: white;
+    }
+
+    .delete-btn {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    .edit-btn:hover {
+      background-color: #008c69;
+    }
+
+    .delete-btn:hover {
+      background-color: #c82333;
+    }
+    
+    table {
+      border-collapse: separate;
+      border-spacing: 0;
+      width: 100%;
+      margin: 20px 0;
+      background: #1a1a1a;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    th {
+      background-color: #2a2a2a;
+      color: #fff;
+      font-weight: bold;
+      padding: 12px;
+      text-align: right;
+    }
+
+    td {
+      padding: 12px;
+      border-bottom: 1px solid #333;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover {
+      background-color: #2a2a2a;
+    }
+
+    .filter-box {
+      margin-right: 1rem;
+    }
+
+    .filter-box select {
+      padding: 0.8rem 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background: #1a1a1a;
+      color: #fff;
+      min-width: 150px;
+      cursor: pointer;
+    }
+
+    .filter-box select:focus {
+      outline: none;
+      border-color: var(--primary-color);
+    }
+
+    .filter-box select option {
+      padding: 10px;
+    }
+
+    .filter-box select option:hover {
+      background-color: #2a2a2a;
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 2rem;
+      gap: 1rem;
+      flex-wrap: wrap;
+      padding: 1rem;
+    }
+
+    .page-numbers {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .page-number {
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.05);
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      min-width: 40px;
+      text-align: center;
+    }
+
+    .page-number.active {
+      background: var(--primary-color);
+      color: black;
+    }
+
+    .page-number:hover:not(.active) {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    #prevPage, #nextPage {
+      padding: 0.5rem 1rem;
+      min-width: 80px;
+      background: var(--primary-color);
+      color: black;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    #prevPage:hover, #nextPage:hover {
+      background: #00ff9d;
+      transform: translateY(-2px);
+    }
+
+    #prevPage:disabled, #nextPage:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    @media (max-width: 768px) {
+      .pagination {
+        padding: 0.5rem;
+      }
+
+      .page-number {
+        min-width: 35px;
+        padding: 0.4rem 0.8rem;
+      }
+
+      #prevPage, #nextPage {
+        min-width: 70px;
+        padding: 0.4rem 0.8rem;
+      }
+    }
+
+    .revenue-details {
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      background: rgba(0, 230, 118, 0.1);
+      border-radius: 8px;
+    }
+
+    .revenue-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .revenue-item:last-child {
+      border-bottom: none;
+    }
+
+    .revenue-item.total {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 2px solid var(--primary-color);
+      font-weight: bold;
+      font-size: 1.2em;
+    }
+
+    .revenue-item .value {
+      color: var(--primary-color);
+      font-weight: bold;
+    }
+
+    /* تنسيق صناديق الاختيار */
+    input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      position: relative;
+      margin: 0;
+      appearance: none;
+      background-color: rgba(255, 255, 255, 0.1);
+      border: 2px solid var(--primary-color);
+      border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+
+    input[type="checkbox"]:checked {
+      background-color: var(--primary-color);
+    }
+
+    input[type="checkbox"]:checked::after {
+      content: '✓';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #000;
+      font-size: 12px;
+    }
+
+    /* تنسيق الصفوف المحددة */
+    tr.selected-row {
+      background-color: rgba(0, 230, 118, 0.1) !important;
+    }
+
+    tr.selected-row td {
+      border-color: var(--primary-color);
+    }
+
+    /* تحسين مظهر زر الحذف المتعدد */
+    .delete-selected {
+      opacity: 0.6;
+      transition: all 0.3s ease;
+    }
+
+    .delete-selected:not(:disabled) {
+      opacity: 1;
+    }
+
+    .delete-selected:not(:disabled):hover {
+      background-color: #ff6666;
+      transform: translateY(-2px);
+    }
+
+    /* تحسين مظهر عداد التحديد */
+    .selected-count {
+      font-weight: bold;
+      color: var(--primary-color);
+    }
+
+    .success-message, .error-message {
+      transition: opacity 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+  <div class="admin-container">
+    <div class="admin-header">
+      <h1>لوحة إدارة التراخيص</h1>
+      <div class="header-buttons">
+        <button class="btn btn-primary" onclick="showAddLicenseModal()">
+          <i class="fas fa-plus"></i>
+          إضافة ترخيص
+        </button>
+        <button class="btn btn-primary quick-generate">
+          <i class="fas fa-bolt"></i>
+          توليد سريع
+        </button>
+        <button class="btn btn-danger delete-selected" onclick="deleteSelected()" disabled>
+          <i class="fas fa-trash"></i>
+          حذف (<span class="selected-count">0</span>)
+        </button>
+        <button class="btn btn-danger" onclick="logout()">
+          <i class="fas fa-sign-out-alt"></i>
+          تسجيل خروج
+        </button>
+      </div>
+    </div>
+
+    <div class="dashboard-stats">
+      <div class="stat-card">
+        <h3>إجمالي التراخيص</h3>
+        <div class="stat-value" id="totalLicenses">0</div>
+      </div>
+      <div class="stat-card">
+        <h3>التراخيص النشطة</h3>
+        <div class="stat-value" id="activeLicenses">0</div>
+      </div>
+      <div class="stat-card">
+        <h3>إجمالي عمليات البحث</h3>
+        <div class="stat-value" id="totalSearches">0</div>
+      </div>
+    </div>
+
+    <div class="charts-container">
+      <div class="chart-card">
+        <h3>تفاصيل الإيرادات</h3>
+        <div class="revenue-details">
+          <div class="revenue-item">
+            <span>عدد التراخيص النشطة:</span>
+            <span class="value" id="activeLicensesCount">0</span>
+          </div>
+          <div class="revenue-item">
+            <span>سعر الترخيص:</span>
+            <span class="value">100 ريال</span>
+          </div>
+          <div class="revenue-item">
+            <span>إجمالي المبيعات:</span>
+            <span class="value" id="totalSales">0 ريال</span>
+          </div>
+          <div class="revenue-item">
+            <span>الضريبة (3 ريال/ترخيص):</span>
+            <span class="value" id="totalTax">0 ريال</span>
+          </div>
+          <div class="revenue-item total">
+            <span>الربح الصافي:</span>
+            <span class="value" id="netProfit">0 ريال</span>
+          </div>
+        </div>
+        <div class="chart-container">
+          <canvas id="revenueChart"></canvas>
+        </div>
+      </div>
+      <div class="chart-card">
+        <h3>حالة التراخيص</h3>
+        <div class="chart-container">
+          <canvas id="licenseStatusChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="license-table-container">
+      <div class="table-header">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="ابحث عن ترخيص...">
+        </div>
+        <div class="filter-box">
+          <select id="statusFilter" class="form-control">
+            <option value="all" style="background: #1a1a1a;">جميع الحالات</option>
+            <option value="active" style="background: #1a1a1a; color: #00a67c;">نشط</option>
+            <option value="suspended" style="background: #1a1a1a; color: #ffc107;">موقوف</option>
+            <option value="expired" style="background: #1a1a1a; color: #dc3545;">منتهي</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="license-table">
+          <thead>
+            <tr>
+              <th>
+                <input type="checkbox" id="selectAll" onchange="toggleSelectAll(this)">
+              </th>
+              <th>كود الترخيص</th>
+              <th>النوع</th>
+              <th>الحالة</th>
+              <th>تاريخ الإنشاء</th>
+              <th>تاريخ الانتهاء</th>
+              <th>الأيام المتبقية</th>
+              <th>عمليات البحث</th>
+              <th>الإجراءات</th>
+            </tr>
+          </thead>
+          <tbody id="licenseTableBody">
+            <!-- سيتم ملء الجدول بالبيانات من JavaScript -->
+          </tbody>
+        </table>
+        <div class="pagination">
+          <button id="prevPage" class="btn btn-primary">السابق</button>
+          <div id="pageNumbers" class="page-numbers"></div>
+          <button id="nextPage" class="btn btn-primary">التالي</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- نافذة توليد التراخيص السريع -->
+  <div class="modal" id="quickGenerateModal">
+    <div class="modal-content">
+      <h2>توليد تراخيص سريع</h2>
+      <div class="form-group">
+        <label>عدد التراخيص</label>
+        <input type="number" id="licenseCount" min="1" max="100" value="1">
+        <small>يمكنك توليد من 1 إلى 100 ترخيص دفعة واحدة</small>
+      </div>
+      <div class="modal-buttons">
+        <button class="btn btn-primary" onclick="generateQuickLicenses()">توليد</button>
+        <button class="btn btn-danger" onclick="closeModal('quickGenerateModal')">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- نافذة تعديل الترخيص -->
+  <div class="modal" id="editModal">
+    <div class="modal-content">
+      <h2>تعديل الترخيص</h2>
+      <form id="editForm">
+        <input type="hidden" id="editLicenseKey">
+        <div class="form-group">
+          <label>نوع الترخيص</label>
+          <select id="editType" class="form-select" required>
+            <option value="basic">أساسي</option>
+            <option value="trial">تجريبي</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>الحالة</label>
+          <select id="editStatus" class="form-control">
+            <option value="active">نشط</option>
+            <option value="suspended">موقوف</option>
+            <option value="expired">منتهي</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>عدد عمليات البحث</label>
+          <input type="number" id="editMaxSearches" class="form-control">
+        </div>
+        <div class="modal-buttons">
+          <button type="submit" class="btn btn-primary">حفظ</button>
+          <button type="button" class="btn btn-danger" onclick="closeModal('editModal')">إلغاء</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- نافذة إضافة ترخيص جديد -->
+  <div class="modal" id="addLicenseModal">
+    <div class="modal-content">
+      <h2>إضافة ترخيص جديد</h2>
+      <form id="addLicenseForm">
+        <div class="form-group">
+          <label>نوع الترخيص</label>
+          <select id="newType" class="form-control" required>
+            <option value="basic">أساسي</option>
+            <option value="trial">تجريبي</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>مدة الترخيص (بالأيام)</label>
+          <input type="number" id="newDuration" class="form-control" min="1" value="30" required>
+        </div>
+        <div class="form-group">
+          <label>عدد عمليات البحث</label>
+          <input type="number" id="newMaxSearches" class="form-control" min="1" value="100" required>
+        </div>
+        <div class="modal-buttons">
+          <button type="submit" class="btn btn-primary">إنشاء</button>
+          <button type="button" class="btn btn-danger" onclick="closeModal('addLicenseModal')">إلغاء</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- نافذة خطأ -->
+  <div class="modal" id="errorModal">
+    <div class="modal-content text-center">
+      <div class="error-icon">
+        <i class="fas fa-times-circle fa-3x text-danger"></i>
+      </div>
+      <h2>خطأ!</h2>
+      <p id="errorMessage">انتهت محاولات البحث</p>
+      <button class="btn btn-primary" onclick="closeModal('errorModal')">حسناً</button>
+    </div>
+  </div>
+
+  <script>
+    let licenses = [];
+    let currentPage = 1;
+    const itemsPerPage = 10;
+    let filteredLicenses = [];
+
+    // تهيئة الألوان للرسوم البيانية
+    const chartColors = {
+      primary: '#00e676',
+      secondary: '#ff4444',
+      tertiary: '#2979ff',
+      background: 'rgba(255, 255, 255, 0.1)'
+    };
+
+    // تحميل التراخيص عند تحميل الصفحة
+    window.onload = async function() {
+      await loadLicenses();
+      setupEventListeners();
+    };
+
+    // إعداد مستمعي الأحداث
+    function setupEventListeners() {
+      // مستمع حدث للبحث
+      document.getElementById('searchInput').addEventListener('input', handleSearch);
+      
+      // مستمع حدث لزر التوليد السريع
+      document.querySelector('.quick-generate').addEventListener('click', () => {
+        document.getElementById('quickGenerateModal').style.display = 'flex';
+      });
+
+      // مستمع حدث لزر الحذف المتعدد
+      document.querySelector('.delete-selected').addEventListener('click', deleteSelected);
+
+      // مستمع حدث لنموذج التعديل
+      document.getElementById('editForm').addEventListener('submit', handleEditSubmit);
+
+      // مستمع حدث لنموذج إضافة ترخيص جديد
+      document.getElementById('addLicenseForm').addEventListener('submit', handleAddSubmit);
+    }
+
+    // تحديث دالة تحميل التراخيص
+    async function loadLicenses() {
+      try {
+        const response = await fetch('/api/licenses');
+        if (!response.ok) {
+          throw new Error('فشل تحميل التراخيص');
+        }
+        
+        const data = await response.json();
+        licenses = data;
+        
+        // تطبيق الفلتر
+        const statusFilter = document.getElementById('statusFilter').value;
+        filteredLicenses = statusFilter === 'all' 
+          ? [...licenses] 
+          : licenses.filter(license => license.status === statusFilter);
+
+        // ترتيب التراخيص
+        const sortOrder = {
+          'active': 1,
+          'suspended': 2,
+          'expired': 3
+        };
+        
+        filteredLicenses.sort((a, b) => sortOrder[a.status] - sortOrder[b.status]);
+
+        displayLicenses();
+        updatePagination();
+        updateDashboardStats(licenses);
+      } catch (error) {
+        console.error('Error loading licenses:', error);
+        showError('حدث خطأ في تحميل التراخيص: ' + error.message);
+      }
+    }
+
+    // تحديث دالة عرض التراخيص
+    function displayLicenses() {
+      const tableBody = document.querySelector('tbody');
+      tableBody.innerHTML = '';
+      
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      const paginatedLicenses = filteredLicenses.slice(startIndex, endIndex);
+      
+      const typeTranslation = {
+        'basic': 'أساسي',
+        'trial': 'تجريبي'
+      };
+
+      const statusTranslation = {
+        'active': 'نشط',
+        'suspended': 'موقوف',
+        'expired': 'منتهي'
+      };
+      
+      paginatedLicenses.forEach(license => {
+        let statusClass = '';
+        const createdDate = new Date(license.createdAt);
+        const expiresDate = new Date(license.expiresAt);
+        const now = new Date();
+        
+        const timeDiff = expiresDate.getTime() - now.getTime();
+        const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+        
+        switch(license.status) {
+          case 'active':
+            statusClass = 'active-row';
+            break;
+          case 'suspended':
+            statusClass = 'suspended-row';
+            break;
+          case 'expired':
+            statusClass = 'expired-row';
+            break;
+        }
+
+        const row = document.createElement('tr');
+        row.className = statusClass;
+        
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.className = 'license-checkbox';
+        checkbox.value = license.licenseKey;
+        checkbox.addEventListener('change', (e) => {
+          row.classList.toggle('selected-row', e.target.checked);
+          updateDeleteButton();
+        });
+        
+        const checkboxCell = document.createElement('td');
+        checkboxCell.appendChild(checkbox);
+        
+        row.appendChild(checkboxCell);
+        row.innerHTML += `
+          <td>${license.licenseKey}</td>
+          <td>${typeTranslation[license.type]}</td>
+          <td>${statusTranslation[license.status]}</td>
+          <td>${createdDate.toLocaleDateString('ar-SA')}</td>
+          <td>${expiresDate.toLocaleDateString('ar-SA')}</td>
+          <td>${daysLeft > 0 ? daysLeft : 0}</td>
+          <td>${license.searchesLeft}/${license.maxSearches}</td>
+          <td>
+            <button onclick="editLicense('${license.licenseKey}')" class="edit-btn">تعديل</button>
+            <button onclick="deleteLicense('${license.licenseKey}')" class="delete-btn">حذف</button>
+          </td>
+        `;
+        
+        tableBody.appendChild(row);
+      });
+
+      updateDeleteButton();
+    }
+
+    // تحديث دالة حذف التراخيص المحددة
+    async function deleteSelected() {
+      const selectedCheckboxes = document.querySelectorAll('.license-checkbox:checked');
+      const selectedKeys = Array.from(selectedCheckboxes).map(cb => cb.value);
+      
+      if (selectedKeys.length === 0) {
+        showError('الرجاء تحديد ترخيص واحد على الأقل للحذف');
+        return;
+      }
+
+      if (!confirm(`هل أنت متأكد من حذف ${selectedKeys.length} ترخيص؟`)) {
+        return;
+      }
+
+      try {
+        document.body.style.cursor = 'wait';
+        const deleteBtn = document.querySelector('.delete-selected');
+        deleteBtn.disabled = true;
+        
+        const response = await fetch('/api/licenses/batch', {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ licenseKeys: selectedKeys })
+        });
+
+        const result = await response.json();
+        
+        if (!response.ok) {
+          throw new Error(result.message || 'فشل حذف التراخيص');
+        }
+
+        if (result.success) {
+          // إظهار رسالة النجاح
+          const successMessage = document.createElement('div');
+          successMessage.className = 'success-message';
+          successMessage.textContent = result.message;
+          successMessage.style.position = 'fixed';
+          successMessage.style.top = '20px';
+          successMessage.style.right = '20px';
+          successMessage.style.backgroundColor = 'var(--primary-color)';
+          successMessage.style.color = '#000';
+          successMessage.style.padding = '1rem';
+          successMessage.style.borderRadius = '8px';
+          successMessage.style.zIndex = '1000';
+          successMessage.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+          
+          document.body.appendChild(successMessage);
+          setTimeout(() => {
+            successMessage.style.opacity = '0';
+            setTimeout(() => successMessage.remove(), 300);
+          }, 3000);
+          
+          // إعادة تحميل التراخيص وتحديث الواجهة
+          await loadLicenses();
+          
+          // إعادة تعيين زر تحديد الكل
+          const selectAllCheckbox = document.getElementById('selectAll');
+          if (selectAllCheckbox) {
+            selectAllCheckbox.checked = false;
+          }
+        } else {
+          throw new Error(result.message || 'فشل حذف التراخيص');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        showError(error.message || 'حدث خطأ أثناء حذف التراخيص');
+      } finally {
+        document.body.style.cursor = 'default';
+        const deleteBtn = document.querySelector('.delete-selected');
+        deleteBtn.disabled = false;
+      }
+    }
+
+    // تحديث دالة تحديد/إلغاء تحديد الكل
+    function toggleSelectAll(checkbox) {
+      const checkboxes = document.querySelectorAll('.license-checkbox');
+      const rows = document.querySelectorAll('tbody tr');
+      
+      checkboxes.forEach((cb, index) => {
+        cb.checked = checkbox.checked;
+        rows[index].classList.toggle('selected-row', checkbox.checked);
+      });
+      
+      updateDeleteButton();
+    }
+
+    // تحديث دالة updateDeleteButton
+    function updateDeleteButton() {
+      const selectedCheckboxes = document.querySelectorAll('.license-checkbox:checked');
+      const selectedCount = selectedCheckboxes.length;
+      const deleteBtn = document.querySelector('.delete-selected');
+      const countSpan = document.querySelector('.selected-count');
+      
+      if (deleteBtn && countSpan) {
+        countSpan.textContent = selectedCount;
+        deleteBtn.disabled = selectedCount === 0;
+        
+        if (selectedCount > 0) {
+          deleteBtn.classList.remove('disabled');
+          deleteBtn.style.opacity = '1';
+        } else {
+          deleteBtn.classList.add('disabled');
+          deleteBtn.style.opacity = '0.6';
+        }
+      }
+
+      // تحديث حالة زر تحديد الكل
+      const selectAllCheckbox = document.getElementById('selectAll');
+      const allCheckboxes = document.querySelectorAll('.license-checkbox');
+      
+      if (selectAllCheckbox && allCheckboxes.length > 0) {
+        selectAllCheckbox.checked = selectedCount === allCheckboxes.length && selectedCount > 0;
+        selectAllCheckbox.indeterminate = selectedCount > 0 && selectedCount < allCheckboxes.length;
+      }
+    }
+
+    // دالة تحديث الصفحات
+    function updatePagination() {
+      const totalPages = Math.ceil(filteredLicenses.length / itemsPerPage);
+      const pageNumbers = document.getElementById('pageNumbers');
+      pageNumbers.innerHTML = '';
+
+      // إضافة أزرار الصفحات
+      for (let i = 1; i <= totalPages; i++) {
+        const pageButton = document.createElement('div');
+        pageButton.className = `page-number ${i === currentPage ? 'active' : ''}`;
+        pageButton.textContent = i;
+        pageButton.onclick = () => {
+          currentPage = i;
+          displayLicenses();
+          updatePagination();
+        };
+        pageNumbers.appendChild(pageButton);
+      }
+
+      // تحديث حالة أزرار التنقل
+      document.getElementById('prevPage').disabled = currentPage === 1;
+      document.getElementById('nextPage').disabled = currentPage === totalPages;
+    }
+
+    // إضافة مستمعي الأحداث للتنقل بين الصفحات
+    document.getElementById('prevPage').addEventListener('click', () => {
+      if (currentPage > 1) {
+        currentPage--;
+        displayLicenses();
+        updatePagination();
+      }
+    });
+
+    document.getElementById('nextPage').addEventListener('click', () => {
+      const totalPages = Math.ceil(filteredLicenses.length / itemsPerPage);
+      if (currentPage < totalPages) {
+        currentPage++;
+        displayLicenses();
+        updatePagination();
+      }
+    });
+
+    // إضافة مستمع حدث لفلتر الحالة
+    document.getElementById('statusFilter').addEventListener('change', () => {
+      currentPage = 1; // إعادة التعيين إلى الصفحة الأولى عند تغيير الفلتر
+      loadLicenses();
+    });
+
+    // دالة البحث
+    function handleSearch(e) {
+      const searchTerm = e.target.value.toLowerCase();
+      filteredLicenses = licenses.filter(license => {
+        return (
+          license.licenseKey.toLowerCase().includes(searchTerm) ||
+          license.type.toLowerCase().includes(searchTerm) ||
+          license.status.toLowerCase().includes(searchTerm)
+        );
+      });
+      currentPage = 1;
+      displayLicenses();
+      updatePagination();
+    }
+
+    // دالة حذف ترخيص
+    async function deleteLicense(licenseKey) {
+      if (!confirm('هل أنت متأكد من حذف هذا الترخيص؟')) return;
+
+      try {
+        const response = await fetch(`/api/licenses/${licenseKey}`, {
+          method: 'DELETE'
+        });
+        
+        if (response.ok) {
+          await loadLicenses();
+        } else {
+          throw new Error('فشل حذف الترخيص');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('حدث خطأ أثناء حذف الترخيص');
+      }
+    }
+
+    // دالة تعديل ترخيص
+    function editLicense(licenseKey) {
+      const license = licenses.find(l => l.licenseKey === licenseKey);
+      if (!license) {
+        console.error('License not found:', licenseKey);
+        return;
+      }
+
+      // تعبئة بيانات النموذج
+      document.getElementById('editLicenseKey').value = license.licenseKey;
+      document.getElementById('editType').value = license.type;
+      document.getElementById('editStatus').value = license.status;
+      document.getElementById('editMaxSearches').value = license.maxSearches;
+
+      // عرض النافذة المنبثقة
+      document.getElementById('editModal').style.display = 'flex';
+    }
+
+    // دالة إغلاق النوافذ المنبثقة
+    function closeModal(modalId) {
+      document.getElementById(modalId).style.display = 'none';
+      // إعادة تعيين النموذج إذا كان موجوداً
+      const form = document.getElementById(modalId).querySelector('form');
+      if (form) {
+        form.reset();
+      }
+    }
+
+    // معالجة نموذج التعديل
+    async function handleEditSubmit(e) {
+      e.preventDefault();
+
+      const licenseKey = document.getElementById('editLicenseKey').value;
+      const currentLicense = licenses.find(l => l.licenseKey === licenseKey);
+      
+      if (!currentLicense) {
+        console.error('License not found for editing');
+        return;
+      }
+
+      const newMaxSearches = parseInt(document.getElementById('editMaxSearches').value);
+      
+      // حساب عدد المحاولات المتبقية الجديد
+      let newSearchesLeft = newMaxSearches;
+      if (currentLicense.searchesLeft < currentLicense.maxSearches) {
+        const ratio = currentLicense.searchesLeft / currentLicense.maxSearches;
+        newSearchesLeft = Math.round(newMaxSearches * ratio);
+      }
+
+      const data = {
+        type: document.getElementById('editType').value,
+        status: document.getElementById('editStatus').value,
+        maxSearches: newMaxSearches,
+        searchesLeft: newSearchesLeft
+      };
+
+      try {
+        const response = await fetch(`/api/licenses/${licenseKey}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+          closeModal('editModal');
+          await loadLicenses();
+        } else {
+          throw new Error('فشل تحديث الترخيص');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('حدث خطأ أثناء تحديث الترخيص');
+      }
+    }
+
+    // دالة توليد التراخيص السريع
+    async function generateQuickLicenses() {
+      const count = parseInt(document.getElementById('licenseCount').value);
+      if (count < 1 || count > 100) {
+        alert('يرجى إدخال عدد بين 1 و 100');
+        return;
+      }
+
+      try {
+        const promises = Array(count).fill().map(() => 
+          fetch('/api/licenses', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              type: 'basic',
+              duration: 30,
+              maxSearches: 100
+            })
+          })
+        );
+
+        await Promise.all(promises);
+        closeModal('quickGenerateModal');
+        await loadLicenses();
+      } catch (error) {
+        console.error('Error:', error);
+        alert('حدث خطأ أثناء توليد التراخيص');
+      }
+    }
+
+    // إضافة مستمع حدث للصناديق وتحديث الصفوف
+    document.addEventListener('change', function(e) {
+      if (e.target.classList.contains('license-checkbox')) {
+        const row = e.target.closest('tr');
+        if (row) {
+          row.classList.toggle('selected-row', e.target.checked);
+        }
+        updateDeleteButton();
+      } else if (e.target.id === 'selectAll') {
+        const rows = document.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+          row.classList.toggle('selected-row', e.target.checked);
+        });
+      }
+    });
+
+    // دالة تحديث الإحصائيات والرسوم البيانية
+    function updateDashboardStats(licenses) {
+      const activeLicenses = licenses.filter(l => l.status === 'active').length;
+      const licensePrice = 100;
+      const taxPerLicense = 3;
+      
+      const totalSales = activeLicenses * licensePrice;
+      const totalTax = activeLicenses * taxPerLicense;
+      const netProfit = totalSales - totalTax;
+
+      // تحديث الإحصائيات
+      document.getElementById('totalLicenses').textContent = licenses.length.toLocaleString('ar-SA');
+      document.getElementById('activeLicenses').textContent = activeLicenses.toLocaleString('ar-SA');
+      document.getElementById('activeLicensesCount').textContent = activeLicenses.toLocaleString('ar-SA');
+      document.getElementById('totalSales').textContent = `${totalSales.toLocaleString('ar-SA')} ريال`;
+      document.getElementById('totalTax').textContent = `${totalTax.toLocaleString('ar-SA')} ريال`;
+      document.getElementById('netProfit').textContent = `${netProfit.toLocaleString('ar-SA')} ريال`;
+      
+      const totalSearches = licenses.reduce((sum, license) => sum + (license.maxSearches - license.searchesLeft), 0);
+      document.getElementById('totalSearches').textContent = totalSearches.toLocaleString('ar-SA');
+
+      // إحصائيات حالة التراخيص
+      const statusStats = {
+        active: activeLicenses,
+        expired: licenses.filter(l => l.status === 'expired').length,
+        suspended: licenses.filter(l => l.status === 'suspended').length
+      };
+
+      // تحديث مخطط الإيرادات
+      window.revenueChart = new Chart(document.getElementById('revenueChart'), {
+        type: 'doughnut',
+        data: {
+          labels: ['الربح الصافي', 'الضرائب'],
+          datasets: [{
+            data: [netProfit, totalTax],
+            backgroundColor: [chartColors.primary, chartColors.secondary],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                color: '#fff',
+                font: {
+                  family: 'Tajawal'
+                }
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return `${context.label}: ${context.raw.toLocaleString('ar-SA')} ريال`;
+                }
+              }
+            }
+          }
+        }
+      });
+
+      // تحديث مخطط حالة التراخيص
+      window.statusChart = new Chart(document.getElementById('licenseStatusChart'), {
+        type: 'bar',
+        data: {
+          labels: ['نشط', 'منتهي', 'موقوف'],
+          datasets: [{
+            label: 'عدد التراخيص',
+            data: [statusStats.active, statusStats.expired, statusStats.suspended],
+            backgroundColor: [
+              chartColors.primary,
+              chartColors.secondary,
+              chartColors.tertiary
+            ],
+            borderWidth: 0,
+            borderRadius: 5
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                color: '#fff',
+                font: {
+                  family: 'Tajawal'
+                }
+              },
+              grid: {
+                color: chartColors.background
+              }
+            },
+            x: {
+              ticks: {
+                color: '#fff',
+                font: {
+                  family: 'Tajawal'
+                }
+              },
+              grid: {
+                color: chartColors.background
+              }
+            }
+          },
+          plugins: {
+            legend: {
+              display: false
+            }
+          }
+        }
+      });
+    }
+
+    // دالة إظهار نافذة إضافة ترخيص
+    function showAddLicenseModal() {
+      document.getElementById('addLicenseModal').style.display = 'flex';
+    }
+
+    // معالجة نموذج إضافة ترخيص جديد
+    async function handleAddSubmit(e) {
+      e.preventDefault();
+
+      const data = {
+        type: document.getElementById('newType').value,
+        duration: parseInt(document.getElementById('newDuration').value),
+        maxSearches: parseInt(document.getElementById('newMaxSearches').value)
+      };
+
+      try {
+        const response = await fetch('/api/licenses', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+          closeModal('addLicenseModal');
+          await loadLicenses();
+          // تنظيف النموذج
+          e.target.reset();
+        } else {
+          throw new Error('فشل إنشاء الترخيص');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('حدث خطأ أثناء إنشاء الترخيص');
+      }
+    }
+
+    // دالة تسجيل الخروج
+    async function logout() {
+      try {
+        const response = await fetch('/logout', {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        // إعادة التوجيه إلى صفحة تسجيل الدخول
+        if (response.ok || response.redirected) {
+          window.location.href = '/login';
+        } else {
+          throw new Error('فشل تسجيل الخروج');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        // في حالة الخطأ، نحاول إعادة التوجيه مباشرة
+        window.location.href = '/login';
+      }
+    }
+
+    // تحديث دالة تحديث حالة الترخيص
+    async function updateLicenseStatus(licenseKey, newStatus) {
+      try {
+        const response = await fetch(`/api/licenses/${licenseKey}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            status: newStatus
+          })
+        });
+
+        if (response.ok) {
+          // تحديث الترخيص في المصفوفة المحلية
+          const license = licenses.find(l => l.licenseKey === licenseKey);
+          if (license) {
+            license.status = newStatus;
+          }
+        }
+      } catch (error) {
+        console.error('Error updating license status:', error);
+      }
+    }
+
+    // تحديث دالة showError
+    function showError(message) {
+      const errorMessage = document.createElement('div');
+      errorMessage.className = 'error-message';
+      errorMessage.textContent = message;
+      errorMessage.style.position = 'fixed';
+      errorMessage.style.top = '20px';
+      errorMessage.style.right = '20px';
+      errorMessage.style.backgroundColor = 'var(--danger-color)';
+      errorMessage.style.color = 'white';
+      errorMessage.style.padding = '1rem';
+      errorMessage.style.borderRadius = '8px';
+      errorMessage.style.zIndex = '1000';
+      errorMessage.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+      
+      document.body.appendChild(errorMessage);
+      setTimeout(() => {
+        errorMessage.style.opacity = '0';
+        setTimeout(() => errorMessage.remove(), 300);
+      }, 3000);
+    }
+  </script>
+</body>
+</html> 

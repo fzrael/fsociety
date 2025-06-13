@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>خطط الأسعار - fsociety</title>
+  <link rel="icon" type="image/x-icon" href="/fsociety.ico">
+  <link rel="shortcut icon" type="image/x-icon" href="/fsociety.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    :root {
+      --primary-color: #00e676;
+      --dark-bg: #0a0a0a;
+      --card-bg: #111111;
+      --text-color: #ffffff;
+      --border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Tajawal', sans-serif;
+    }
+
+    body {
+      background-color: var(--dark-bg);
+      color: var(--text-color);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .pricing-header {
+      margin-bottom: 3rem;
+    }
+
+    .pricing-header h1 {
+      color: var(--primary-color);
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+
+    .pricing-header p {
+      color: #888;
+      font-size: 1.1rem;
+    }
+
+    .pricing-card {
+      background: var(--card-bg);
+      border-radius: 15px;
+      padding: 2rem;
+      max-width: 400px;
+      margin: 0 auto;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      border: 1px solid var(--border-color);
+      transition: transform 0.3s ease;
+    }
+
+    .pricing-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .plan-name {
+      color: var(--text-color);
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+
+    .plan-price {
+      color: var(--primary-color);
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .plan-price img {
+      height: 2rem;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .features-list {
+      list-style: none;
+      margin-bottom: 2rem;
+      text-align: right;
+    }
+
+    .feature-item {
+      margin-bottom: 1rem;
+      color: #fff;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .feature-item i {
+      color: var(--primary-color);
+      font-size: 1rem;
+    }
+
+    .feature-item::before {
+      content: "✓";
+      color: var(--primary-color);
+      font-weight: bold;
+    }
+
+    .feature-highlight {
+      color: var(--primary-color);
+      font-weight: 500;
+    }
+
+    .payment-methods {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      justify-content: center;
+      align-items: center;
+      margin-top: 1.5rem;
+    }
+
+    .payment-method {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      padding: 0.8rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.3s ease;
+    }
+
+    .payment-method:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .payment-method img {
+      height: 24px;
+      width: auto;
+      object-fit: contain;
+      opacity: 0.9;
+    }
+
+    .payment-method span {
+      color: #888;
+      font-size: 0.85rem;
+      text-align: center;
+    }
+
+    .subscribe-btn {
+      background: var(--primary-color);
+      color: #000;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.3s ease;
+      margin-bottom: 1.5rem;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .subscribe-btn i {
+      font-size: 1rem;
+    }
+
+    .subscribe-btn:hover {
+      background: #00ff9d;
+      transform: translateY(-2px);
+    }
+
+    .subscribe-btn:hover i {
+      transform: scale(1.1);
+    }
+
+    .back-button {
+      position: fixed;
+      top: 2rem;
+      right: 2rem;
+      background: rgba(0, 0, 0, 0.3);
+      color: var(--primary-color);
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      border: 1px solid rgba(0, 230, 118, 0.2);
+      backdrop-filter: blur(5px);
+      z-index: 100;
+    }
+
+    .back-button:hover {
+      background: var(--primary-color);
+      color: #000;
+      transform: translateY(-2px);
+      border-color: transparent;
+    }
+
+    .back-button i {
+      font-size: 1.2rem;
+    }
+
+    @media (max-width: 768px) {
+      .pricing-header h1 {
+        font-size: 2rem;
+      }
+
+      .pricing-card {
+        padding: 1.5rem;
+      }
+
+      .plan-price {
+        font-size: 2rem;
+      }
+
+      .feature-item {
+        font-size: 1rem;
+      }
+
+      .payment-methods {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .back-button {
+        top: 1.5rem;
+        right: 1.5rem;
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 1rem;
+      }
+
+      .pricing-header h1 {
+        font-size: 1.8rem;
+      }
+
+      .pricing-card {
+        padding: 1.2rem;
+      }
+
+      .payment-methods {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.8rem;
+      }
+
+      .payment-method {
+        padding: 0.8rem;
+      }
+
+      .payment-method img {
+        height: 25px;
+      }
+
+      .back-button {
+        top: 1rem;
+        right: 1rem;
+        width: 35px;
+        height: 35px;
+        font-size: 0.9rem;
+      }
+    }
+
+    .pricing-header h1 i {
+      margin-left: 10px;
+      color: var(--primary-color);
+    }
+  </style>
+</head>
+<body>
+  <!-- إضافة زر العودة -->
+  <a href="/" class="back-button" title="العودة للرئيسية">
+    <i class="fas fa-home"></i>
+  </a>
+
+  <div class="container">
+    <div class="pricing-header">
+      <h1><i class="fas fa-tags"></i> خطط الأسعار</h1>
+      <p>اختر الخطة المناسبة لاحتياجاتك</p>
+    </div>
+
+    <div class="pricing-card">
+      <h2 class="plan-name">الخطة الماسية</h2>
+      <div class="plan-price">
+        <img src="/saudi_riyal-removebg-preview.png" alt="ريال سعودي">
+        <span>50</span>
+      </div>
+      
+      <ul class="features-list">
+        <li class="feature-item">إمكانية أستخدام الـ<span class="feature-highlight">API</span></li>
+        <li class="feature-item"><span class="feature-highlight">100</span> عملية بحث متقدم</li>
+        <li class="feature-item">الترخيص صالح لمدة <span class="feature-highlight">30</span> يوم</li>
+        <li class="feature-item">تحميل البيانات بحجم <span class="feature-highlight">364GB</span></li>
+        <li class="feature-item">تنبيهات فورية عبر الـ<span class="feature-highlight">WEBHOOK</span></li>
+        <li class="feature-item">شاملة المميزات المستقبلية</span></li>
+
+      </ul>
+
+      <a href="#" class="subscribe-btn">
+        <i class="fas fa-rocket"></i>
+        اشترك الآن
+      </a>
+
+      <div class="payment-methods">
+        <div class="payment-method">
+          <img src="/applepay.png" alt="Apple Pay">
+        </div>
+        <div class="payment-method">
+          <img src="/mastercard.png" alt="Mastercard">
+        </div>
+        <div class="payment-method">
+          <img src="/visa.png" alt="Visa">
+        </div>
+        <div class="payment-method">
+          <img src="/mada.png" alt="مدى">
+        </div>
+        <div class="payment-method">
+          <img src="/bank.png" alt="تحويل بنكي">
+        </div>
+        <div class="payment-method">
+          <img src="/stcpay.png" alt="STC Pay">
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html> 

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>معلومات الترخيص - FsocietyData</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #00e676;
+            --error-color: #ff3b30;
+            --warning-color: #ff9500;
+            --background-dark: #1a1a1a;
+            --card-background: #2a2a2a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background: var(--background-dark);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .license-card {
+            background: var(--card-background);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            font-size: 1rem;
+        }
+
+        .verify-btn {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 8px;
+            border: none;
+            background: var(--primary-color);
+            color: black;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .verify-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .license-info {
+            display: none;
+            margin-top: 2rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .info-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .info-item i {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .info-item .label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 0.3rem;
+        }
+
+        .info-item .value {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .warning-badge {
+            display: none;
+            background: rgba(255, 149, 0, 0.1);
+            color: var(--warning-color);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            margin-top: 1rem;
+            text-align: center;
+            border: 1px solid var(--warning-color);
+        }
+
+        .warning-badge i {
+            margin-left: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .info-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="license-card">
+            <h2 style="text-align: center; margin-bottom: 2rem;">معلومات الترخيص</h2>
+            
+            <div class="input-group">
+                <input type="text" id="licenseKey" class="form-input" placeholder="أدخل مفتاح الترخيص" pattern="[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}">
+            </div>
+            
+            <button id="verifyBtn" class="verify-btn">
+                <i class="fas fa-search"></i>
+                عرض المعلومات
+            </button>
+
+            <div id="licenseInfo" class="license-info">
+                <div class="info-grid">
+                    <div class="info-item">
+                        <i class="fas fa-clock"></i>
+                        <div class="label">تاريخ التفعيل</div>
+                        <div class="value" id="activationDate">-</div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-hourglass-end"></i>
+                        <div class="label">تاريخ الانتهاء</div>
+                        <div class="value" id="expiryDate">-</div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-check-circle"></i>
+                        <div class="label">الحالة</div>
+                        <div class="value" id="status">-</div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-calendar-day"></i>
+                        <div class="label">الأيام المتبقية</div>
+                        <div class="value" id="daysLeft">-</div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-search"></i>
+                        <div class="label">عمليات البحث المتبقية</div>
+                        <div class="value" id="searchesLeft">-</div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-history"></i>
+                        <div class="label">إجمالي عمليات البحث</div>
+                        <div class="value" id="totalSearches">-</div>
+                    </div>
+                </div>
+
+                <div id="expiryWarning" class="warning-badge">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>تنبيه: ترخيصك على وشك الانتهاء</span>
+                </div>
+
+                <div id="searchesWarning" class="warning-badge">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>تنبيه: عمليات البحث المتبقية منخفضة</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('verifyBtn').addEventListener('click', async () => {
+            const licenseKey = document.getElementById('licenseKey').value;
+            
+            try {
+                const response = await fetch('/api/license-info', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ licenseKey })
+                });
+
+                const data = await response.json();
+
+                if (data.valid) {
+                    // عرض معلومات الترخيص
+                    document.getElementById('licenseInfo').style.display = 'block';
+                    document.getElementById('activationDate').textContent = new Date(data.createdAt).toLocaleDateString('ar-SA');
+                    document.getElementById('expiryDate').textContent = new Date(data.expiresAt).toLocaleDateString('ar-SA');
+                    document.getElementById('status').textContent = data.status === 'active' ? 'نشط' : 'غير نشط';
+                    document.getElementById('daysLeft').textContent = data.daysLeft;
+                    document.getElementById('searchesLeft').textContent = data.searchesLeft;
+                    document.getElementById('totalSearches').textContent = data.maxSearches;
+
+                    // التحقق من التحذيرات
+                    if (data.daysLeft <= 7) {
+                        document.getElementById('expiryWarning').style.display = 'block';
+                    }
+                    if (data.searchesLeft <= data.maxSearches * 0.1) {
+                        document.getElementById('searchesWarning').style.display = 'block';
+                    }
+                } else {
+                    alert(data.message || 'حدث خطأ في التحقق من الترخيص');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('حدث خطأ في الاتصال بالخادم');
+            }
+        });
+    </script>
+</body>
+</html> 

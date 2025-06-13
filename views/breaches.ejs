@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>قواعد البيانات المسربة - Raven</title>
+  <link rel="icon" type="image/x-icon" href="/fsociety.ico">
+  <link rel="shortcut icon" type="image/x-icon" href="/fsociety.ico">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="container breaches-page">
+    <nav class="main-nav">
+      <a href="/" class="nav-link">الرئيسية</a>
+      <a href="/breaches" class="nav-link active">قواعد البيانات المسربة</a>
+    </nav>
+    <div class="card">
+      <h1><i class="fas fa-chart-bar"></i> قواعد البيانات المسربة</h1>
+      
+      <div class="filters">
+        <div class="search-box">
+          <i class="fas fa-search search-icon"></i>
+          <input type="text" id="searchBreaches" placeholder="ابحث في قواعد البيانات..." />
+        </div>
+        <div class="filter-options">
+          <select id="industryFilter">
+            <option value=""><i class="fas fa-industry"></i> جميع القطاعات</option>
+          </select>
+          <select id="yearFilter">
+            <option value=""><i class="fas fa-calendar"></i> جميع السنوات</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="breaches-stats">
+        <div class="stat-item total-breaches">
+          <i class="fas fa-database"></i>
+          <span class="stat-label">إجمالي التسريبات</span>
+          <span class="stat-value" id="totalBreaches">0</span>
+        </div>
+        <div class="stat-item total-records">
+          <i class="fas fa-file-alt"></i>
+          <span class="stat-label">إجمالي السجلات المسربة</span>
+          <span class="stat-value" id="totalRecords">0</span>
+        </div>
+      </div>
+
+      <div class="breaches-grid" id="breachesGrid">
+        <div class="loading">جاري التحميل...</div>
+      </div>
+    </div>
+  </div>
+
+  <template id="breachCardTemplate">
+    <div class="breach-card">
+      <div class="breach-header">
+        <img class="breach-logo" src="" alt="شعار" onerror="this.src='/default-logo.png'">
+        <div class="breach-title">
+          <h3></h3>
+          <span class="breach-date"></span>
+        </div>
+      </div>
+      <div class="breach-content">
+        <p class="breach-description"></p>
+        <div class="breach-meta">
+          <span class="domain"></span>
+          <span class="industry"></span>
+          <span class="records"></span>
+        </div>
+        <div class="exposed-data-list"></div>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const breachesGrid = document.getElementById('breachesGrid');
+      const searchInput = document.getElementById('searchBreaches');
+      const industryFilter = document.getElementById('industryFilter');
+      const yearFilter = document.getElementById('yearFilter');
+      const totalBreachesEl = document.getElementById('totalBreaches');
+      const totalRecordsEl = document.getElementById('totalRecords');
+      
+      let allBreaches = [];
+      const industries = new Set();
+      const years = new Set();
+
+      function formatNumber(num) {
+        return num.toLocaleString('ar-EG');
+      }
+
+      function formatDate(dateStr) {
+        return new Date(dateStr).toLocaleDateString('ar-EG', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+      }
+
+      function createBreachCard(breach) {
+        const template = document.getElementById('breachCardTemplate');
+        const card = template.content.cloneNode(true);
+        
+        const logo = card.querySelector('.breach-logo');
+        logo.src = breach.logo;
+        
+        const title = card.querySelector('h3');
+        title.textContent = breach.breachID;
+        
+        const date = card.querySelector('.breach-date');
+        date.textContent = formatDate(breach.breachedDate);
+        
+        const description = card.querySelector('.breach-description');
+        description.textContent = breach.exposureDescription;
+        
+        const domain = card.querySelector('.domain');
+        domain.textContent = breach.domain;
+        
+        const industry = card.querySelector('.industry');
+        industry.textContent = breach.industry;
+        
+        const records = card.querySelector('.records');
+        records.textContent = `${formatNumber(breach.exposedRecords)} سجل`;
+        
+        const dataList = card.querySelector('.exposed-data-list');
+        breach.exposedData.forEach(data => {
+          const tag = document.createElement('span');
+          tag.className = 'data-tag';
+          tag.textContent = data;
+          dataList.appendChild(tag);
+        });
+        
+        return card;
+      }
+
+      function updateFilters() {
+        // تحديث قائمة القطاعات
+        industries.forEach(industry => {
+          const option = document.createElement('option');
+          option.value = industry;
+          option.textContent = industry;
+          industryFilter.appendChild(option);
+        });
+
+        // تحديث قائمة السنوات
+        Array.from(years).sort((a, b) => b - a).forEach(year => {
+          const option = document.createElement('option');
+          option.value = year;
+          option.textContent = year;
+          yearFilter.appendChild(option);
+        });
+      }
+
+      function filterBreaches() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const selectedIndustry = industryFilter.value;
+        const selectedYear = yearFilter.value;
+        
+        const filtered = allBreaches.filter(breach => {
+          const matchesSearch = 
+            breach.breachID.toLowerCase().includes(searchTerm) ||
+            breach.domain.toLowerCase().includes(searchTerm) ||
+            breach.exposureDescription.toLowerCase().includes(searchTerm);
+            
+          const matchesIndustry = !selectedIndustry || breach.industry === selectedIndustry;
+          const matchesYear = !selectedYear || new Date(breach.breachedDate).getFullYear().toString() === selectedYear;
+          
+          return matchesSearch && matchesIndustry && matchesYear;
+        });
+        
+        displayBreaches(filtered);
+      }
+
+      function displayBreaches(breaches) {
+        breachesGrid.innerHTML = '';
+        
+        if (breaches.length === 0) {
+          breachesGrid.innerHTML = '<div class="no-results">لا توجد نتائج</div>';
+          return;
+        }
+        
+        breaches.forEach(breach => {
+          breachesGrid.appendChild(createBreachCard(breach));
+        });
+        
+        // تحديث الإحصائيات
+        totalBreachesEl.textContent = formatNumber(breaches.length);
+        const totalRecords = breaches.reduce((sum, breach) => sum + breach.exposedRecords, 0);
+        totalRecordsEl.textContent = formatNumber(totalRecords);
+      }
+
+      try {
+        const response = await fetch('/api/breaches');
+        const data = await response.json();
+        allBreaches = data.exposedBreaches;
+        
+        // جمع القطاعات والسنوات الفريدة
+        allBreaches.forEach(breach => {
+          industries.add(breach.industry);
+          years.add(new Date(breach.breachedDate).getFullYear());
+        });
+        
+        updateFilters();
+        displayBreaches(allBreaches);
+        
+        // إضافة مستمعي الأحداث للفلترة
+        searchInput.addEventListener('input', filterBreaches);
+        industryFilter.addEventListener('change', filterBreaches);
+        yearFilter.addEventListener('change', filterBreaches);
+        
+      } catch (error) {
+        breachesGrid.innerHTML = '<div class="error">حدث خطأ أثناء تحميل البيانات</div>';
+        console.error('Error fetching breaches:', error);
+      }
+    });
+  </script>
+</body>
+</html> 

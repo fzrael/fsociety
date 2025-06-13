@@ -1,0 +1,1698 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+    <!-- Basic Meta Information -->
+    <title>fsociety | Test</title>
+    <meta name="description" content="نقدم خدمة متكاملة للكشف عن تسريبات البيانات وحماية معلوماتك الشخصية باستخدام تقنيات متقدمة. احصل على تقارير دقيقة حول المخاطر المحتملة.">
+    <meta name="keywords" content="حماية البيانات, كشف تسريبات البيانات, أمن المعلومات, fsociety">
+  
+    <!-- Open Graph / Facebook / WhatsApp -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="fsociety | حماية بياناتك وكشف التسريبات">
+    <meta property="og:description" content="نقدم خدمة متكاملة للكشف عن تسريبات البيانات وحماية معلوماتك الشخصية. تقارير دقيقة وإجراءات وقائية متطورة.">
+  
+    <!-- Twitter Card -->
+    <meta name="twitter:title" content="fsociety | حماية بياناتك وكشف التسريبات">
+    <meta name="twitter:description" content="نقدم خدمة متكاملة للكشف عن تسريبات البيانات وحماية معلوماتك الشخصية. تقارير دقيقة وإجراءات وقائية متطورة.">
+  
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/fsociety.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="/fsociety.ico">
+  
+    <!-- External Resources -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/style.css">
+  </head>  
+  <style>
+    /* تم حذف أنماط زر الأسعار القديم لأننا نستخدم الآن نمط nav-link */
+    .premium-search {
+      margin-bottom: 20px;
+    }
+    
+    .free-search-link {
+      border-top: 1px solid #333;
+      padding-top: 20px;
+      margin-top: 20px;
+      text-align: center;
+    }
+    
+    .free-search-link a {
+      color: #4a4a4a;
+      text-decoration: none;
+      font-size: 1.1em;
+      padding: 10px 20px;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+    
+    .free-search-link a:hover {
+      color: #00a67c;
+    }
+
+    .swal2-popup.swal2-dark {
+      background: #1a1a1a !important;
+      color: #fff !important;
+    }
+
+    .swal2-input.dark-input {
+      background: #2a2a2a !important;
+      color: #fff !important;
+      border: 1px solid #333 !important;
+    }
+
+    .swal2-input.dark-input:focus {
+      border-color: #00a67c !important;
+    }
+
+    .swal2-footer-link {
+      color: #00a67c !important;
+      text-decoration: none !important;
+      font-weight: bold !important;
+      padding: 8px 15px !important;
+      border-radius: 4px !important;
+      transition: all 0.3s ease !important;
+      display: inline-block !important;
+    }
+
+    .swal2-footer-link:hover {
+      text-decoration: underline !important;
+      color: #008c69 !important;
+    }
+
+    .logo-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    .logo-container img {
+      margin-bottom: 1.5rem;
+      /* filter: brightness(0) invert(1); */
+      animation: logoFloat 3s ease-in-out infinite;
+    }
+
+    .logo-text {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      text-transform: lowercase;
+      letter-spacing: 4px;
+      color: #00e676;
+      position: relative;
+      animation: glitch 2s linear infinite;
+    }
+
+    .logo-text::before,
+    .logo-text::after {
+      content: 'fsociety';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      overflow: hidden;
+      background: var(--bg-color);
+    }
+
+    .logo-text::before {
+      left: 2px;
+      text-shadow: -1px 0 #00ff00;
+      animation: glitch-1 2s linear infinite reverse;
+    }
+
+    .logo-text::after {
+      left: -2px;
+      text-shadow: -1px 0 #ff0000;
+      animation: glitch-2 2s linear infinite;
+    }
+
+    @keyframes glitch {
+      2%, 64% {
+        transform: translate(2px, 0) skew(0deg);
+      }
+      4%, 60% {
+        transform: translate(-2px, 0) skew(0deg);
+      }
+      62% {
+        transform: translate(0, 0) skew(5deg);
+      }
+    }
+
+    @keyframes glitch-1 {
+      0% {
+        clip-path: inset(30% 0 40% 0);
+      }
+      20% {
+        clip-path: inset(80% 0 1% 0);
+      }
+      40% {
+        clip-path: inset(43% 0 27% 0);
+      }
+      60% {
+        clip-path: inset(25% 0 58% 0);
+      }
+      80% {
+        clip-path: inset(13% 0 75% 0);
+      }
+      100% {
+        clip-path: inset(60% 0 19% 0);
+      }
+    }
+
+    @keyframes glitch-2 {
+      0% {
+        clip-path: inset(93% 0 4% 0);
+      }
+      20% {
+        clip-path: inset(25% 0 58% 0);
+      }
+      40% {
+        clip-path: inset(70% 0 27% 0);
+      }
+      60% {
+        clip-path: inset(3% 0 82% 0);
+      }
+      80% {
+        clip-path: inset(42% 0 43% 0);
+      }
+      100% {
+        clip-path: inset(17% 0 67% 0);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .logo-text {
+        font-size: 2rem;
+        letter-spacing: 3px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .logo-text {
+        font-size: 1.8rem;
+        letter-spacing: 2px;
+      }
+      
+      /* .logo-container img {
+        width: 100px;
+      } */
+    }
+
+    .header-actions {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .license-info-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      background: rgba(0, 230, 118, 0.1);
+      color: var(--primary-color);
+      border: 1px solid var(--primary-color);
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      text-decoration: none;
+    }
+
+    .license-info-btn:hover {
+      background: rgba(0, 230, 118, 0.2);
+      transform: scale(1.05);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .license-info-btn i {
+      font-size: 1.1rem;
+      color: var(--primary-color);
+      filter: drop-shadow(0 0 3px rgba(0, 230, 118, 0.3));
+    }
+
+    .license-info-btn:hover i {
+      transform: rotate(-10deg);
+      filter: drop-shadow(0 0 5px rgba(0, 230, 118, 0.5));
+    }
+
+    /* تأثير الدخول الرئيسي */
+    .entrance-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg-color);
+      z-index: 9999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      animation: fadeOut 1s ease-out 3s forwards;
+      backdrop-filter: blur(10px);
+    }
+
+    .entrance-content {
+      text-align: center;
+      animation: scaleIn 0.5s ease-out;
+    }
+
+    .entrance-logo {
+      width: 150px;
+      height: auto;
+      filter: brightness(0) invert(1);
+      animation: pulse 2s infinite;
+    }
+
+    .entrance-text {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-top: 1rem;
+      text-transform: lowercase;
+      letter-spacing: 4px;
+      color: #00e676;
+      position: relative;
+      animation: glitch 2s linear infinite;
+    }
+
+    .entrance-text::before,
+    .entrance-text::after {
+      content: 'fsociety';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      overflow: hidden;
+      background: var(--bg-color);
+    }
+
+    .entrance-text::before {
+      left: 2px;
+      text-shadow: -1px 0 #00ff00;
+      animation: glitch-1 2s linear infinite reverse;
+    }
+
+    .entrance-text::after {
+      left: -2px;
+      text-shadow: -1px 0 #ff00ff;
+      animation: glitch-2 2s linear infinite;
+    }
+
+    /* تأثير الضباب على المحتوى */
+    .content-blur {
+      filter: blur(10px);
+      transition: filter 0.5s ease-out;
+    }
+
+    .content-blur.clear {
+      filter: blur(0);
+    }
+
+    /* التأثيرات الحركية */
+    @keyframes fadeOut {
+      0% {
+        opacity: 1;
+        backdrop-filter: blur(10px);
+      }
+      100% {
+        opacity: 0;
+        backdrop-filter: blur(0);
+        visibility: hidden;
+      }
+    }
+
+    @keyframes scaleIn {
+      0% {
+        transform: scale(0.5);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+        filter: brightness(0) invert(1) drop-shadow(0 0 0 #00e676);
+      }
+      50% {
+        transform: scale(1.1);
+        filter: brightness(0) invert(1) drop-shadow(0 0 20px #00e676);
+      }
+      100% {
+        transform: scale(1);
+        filter: brightness(0) invert(1) drop-shadow(0 0 0 #00e676);
+      }
+    }
+
+    @keyframes textPulse {
+      0% {
+        text-shadow: 0 0 10px rgba(0, 230, 118, 0.3);
+        transform: scale(1);
+      }
+      50% {
+        text-shadow: 0 0 20px rgba(0, 230, 118, 0.6),
+                     0 0 30px rgba(0, 230, 118, 0.4);
+        transform: scale(1.02);
+      }
+      100% {
+        text-shadow: 0 0 10px rgba(0, 230, 118, 0.3);
+        transform: scale(1);
+      }
+    }
+
+    /* تنسيقات عامة */
+    .container {
+      max-width: 1000px; /* تقليل العرض الأقصى */
+      margin: 0 auto;
+      padding: 0 1rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    /* تعديل أبعاد العناصر */
+    .footer-content {
+      max-width: 1000px; /* تقليل العرض الأقصى */
+      margin: 0 auto;
+      position: relative;
+      width: 100%;
+      padding: 0 1.5rem;
+      box-sizing: border-box;
+    }
+
+    .footer-main {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr; /* تعديل نسب الأعمدة */
+      gap: 2rem; /* تقليل المسافة بين الأعمدة */
+      margin-bottom: 2rem;
+      width: 100%;
+    }
+
+    .footer-logo img {
+      width: 50px; /* تصغير حجم الشعار */
+      height: auto;
+      filter: brightness(0) invert(1);
+      flex-shrink: 0;
+    }
+
+    .footer-text {
+      font-size: 1.5rem; /* تصغير حجم النص */
+      font-weight: 700;
+      color: var(--primary-color);
+      text-transform: lowercase;
+      letter-spacing: 3px;
+      text-shadow: 0 0 10px rgba(0, 230, 118, 0.3);
+      white-space: nowrap;
+    }
+
+    .footer-description {
+      font-size: 0.95rem; /* تصغير حجم النص */
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .stat-item {
+      padding: 1rem; /* تقليل المساحة الداخلية */
+      border-radius: 10px;
+    }
+
+    .stat-item i {
+      font-size: 1.5rem; /* تصغير حجم الأيقونات */
+    }
+
+    .stat-value {
+      font-size: 1.2rem; /* تصغير حجم النص */
+    }
+
+    .stat-label {
+      font-size: 0.8rem; /* تصغير حجم النص */
+    }
+
+    .social-link {
+      padding: 0.8rem 1.5rem; /* تقليل المساحة الداخلية */
+      min-width: 160px; /* تقليل العرض الأدنى */
+    }
+
+    .social-link i {
+      font-size: 1.2rem; /* تصغير حجم الأيقونات */
+    }
+
+    .footer-nav {
+      gap: 1.5rem; /* تقليل المسافة بين الروابط */
+    }
+
+    .footer-nav a {
+      font-size: 0.9rem; /* تصغير حجم النص */
+    }
+
+    .copyright {
+      font-size: 0.9rem; /* تصغير حجم النص */
+    }
+
+    @media (max-width: 1200px) {
+      .container {
+        max-width: 900px;
+      }
+
+      .footer-content {
+        max-width: 900px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        max-width: 100%;
+        padding: 0 1rem;
+      }
+
+      .footer-content {
+        padding: 0 1rem;
+      }
+
+      .footer-main {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .social-link {
+        min-width: unset;
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .footer-logo img {
+        width: 45px;
+      }
+
+      .footer-text {
+        font-size: 1.3rem;
+      }
+
+      .stat-item {
+        padding: 0.8rem;
+      }
+
+      .stat-value {
+        font-size: 1.1rem;
+      }
+
+      .stat-label {
+        font-size: 0.75rem;
+      }
+      body{
+  background: #131416;
+}
+
+.box-canvas{
+  position: relative;
+  margin: auto;
+  display: block;
+  margin-top: 8%;
+  margin-bottom: 8%;
+  width: 350px;
+  height:600px;
+}
+
+.inner {
+  margin: 100px;
+  position: absolute;
+  height: 100px;
+  width: 150px;
+}
+
+.circle {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  box-shadow: 4px 0 0 white;
+}
+
+.circle:nth-child(1) {
+  bottom: 0;
+  transform: rotate(-45deg);
+}
+
+.circle:nth-child(2) {
+  bottom: -25px;
+  left: 50px;
+  transform: rotate(-90deg);
+}
+
+.circle:nth-child(3) {
+  bottom: 0;
+  left: 100px;
+  transform: rotate(-135deg);
+}
+
+.circle:nth-child(4) {
+  top: -8px;
+  transform: rotate(45deg);
+}
+
+.circle:nth-child(5) {
+  top: -33px;
+  left: 50px;
+  transform: rotate(90deg);
+}
+
+.circle:nth-child(6) {
+  top: -8px;
+  left: 100px;
+  transform: rotate(135deg);
+}
+
+.circle::before {
+  content: '';
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  box-shadow: 4px 0 0 white;
+  left: -100px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.circle:nth-child(1)::before {
+  top: calc(50% - 20px);
+}
+
+.circle:nth-child(3)::before {
+  top: calc(50% + 20px);
+}
+
+.circle:nth-child(4)::before {
+  top: calc(50% + 20px);
+}
+
+.circle:nth-child(6)::before {
+  top: calc(50% - 20px);
+}
+
+.line {
+  position: absolute;
+  width: 340px;
+  height: 3px;
+  background: white;
+ 
+}
+
+.line:nth-child(2) {
+  transform: rotate(59deg);
+  transform-origin: top left;
+  left: 90px;
+}
+
+.line:nth-child(3) {
+  transform: rotate(-59deg);
+  transform-origin: top right;
+  left: -80px;
+}
+
+.line:nth-child(4) {
+ top: 145px;
+}
+
+.spider {
+  --spider-color: #40434F;
+
+  position: absolute;
+  width: 75px;
+  height: 175px;
+  left: 50%;
+  transform: translateX(-50%);
+  transform-origin: center top;
+  top: 148px;
+  animation: swing 1s infinite ease-in-out;
+  animation-direction: alternate-reverse;
+}
+
+@keyframes swing {
+  0% {
+    transform: translateX(-50%) rotate(25deg);
+  }
+  
+  100% {
+    transform: translateX(-50%) rotate(-25deg);
+  }
+}
+
+.spider::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 100px;
+  background: white;
+}
+
+.body {
+  position: absolute;
+  width: 30px;
+  height: 40px;
+  border-radius: 50% 50% 40% 40%;
+  background: var(--spider-color);
+  left: 50%;
+  top: 100px;
+  transform: translateX(-50%);
+}
+
+.body::before {
+  content: '';
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background: black;
+  border-radius: 50%;
+  border: 3px solid white;
+  bottom: 6px;
+  left: 3px;
+}
+
+
+.body::after {
+  content: '';
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background: black;
+  border-radius: 50%;
+  border: 3px solid white;
+  bottom: 6px;
+  right: 3px;
+}
+
+.leg {
+  position: absolute;
+ 
+  top: 10px;
+  width: 30px;
+  height: 10px;
+  border-radius: 50%;
+  box-shadow: 0 -3px 0 var(--spider-color);
+}
+
+.leg.left {
+   left: -25px;
+}
+
+.leg.right {
+  right: -25px;
+}
+
+.leg::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  width: 30px;
+  height: 10px;
+  border-radius: 50%;
+  box-shadow: 0 -3px 0 var(--spider-color);
+}
+
+
+.leg::after {
+  content: '';
+  position: absolute;
+  top: 20px;
+  width: 20px;
+  height: 10px;
+  border-radius: 50%;
+  box-shadow: 0 -3px 0 var(--spider-color);
+}
+
+.leg.left::after {
+  left: 8px;
+}
+
+.leg.right::after {
+  right: 8px;
+}
+    }
+  </style>
+</head>
+<body>
+  <!-- تأثير الدخول -->
+  <!-- <div class="entrance-overlay">
+    <div class="entrance-content">
+      <img src="/fsociety.png" alt="fsociety logo" class="entrance-logo">
+      <div class="entrance-text">fsociety</div>
+    </div>
+  </div> -->
+  
+  <!-- المحتوى الرئيسي -->
+
+  <br>
+  <div class="container">
+    <div class="logo-container">
+    </div>
+
+    <br>
+    <nav class="main-nav">
+      <br>
+      <a href="/" class="nav-link active">الرئيسية</a>
+      <a href="/breaches" class="nav-link">حجم البيانات</a>
+      <a href="/pricing" class="nav-link">الأسعار</a>
+      <!-- <a href="/privacy-policy" class="nav-link">الخصوصية</a> -->
+
+    </nav>
+    <div class="card">
+      <div class="logo-container">
+        <img src="fsociety_transparent.gif" alt="fsociety icon" width="200" height="200">
+      </div>
+      <div class="header-actions">
+        <a href="/license-info" class="license-info-btn" title="معلومات الترخيص">
+          <i class="fas fa-key"></i>
+        </a>
+      </div>
+      
+      <!-- البحث المتقدم -->
+      <form id="searchForm" action="/search" method="get">
+        <div class="license-section">
+          <div class="license-input">
+            <div class="license-icon">
+              <i class="fas fa-key"></i>
+            </div>
+            <input type="text" 
+                   name="licenseKey" 
+                   placeholder="أدخل كود الترخيص" 
+                   pattern="[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}"
+                   title="يجب أن يكون الترخيص بالصيغة: XXXX-XXXX-XXXX-XXXX">
+          </div>
+          <div class="input-group premium-search">
+            <input type="email" name="email" placeholder="أدخل بريدك الإلكتروني" required>
+            <button type="submit" class="premium-btn">
+              <span>بحث متقدم</span>
+              <i class="fas fa-search"></i>
+              <div class="loader"></div>
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <!-- رابط البحث المجاني -->
+      <div class="free-search-link">
+        <a href="#" id="freeSearchLink">البحث العام</a>
+      </div>
+    </div>
+    <div class="features-section">
+      <div class="free-features">
+        <h2><i class="fas fa-star"></i> المميزات المتقدمة</h2>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon"><i class="fas fa-magnifying-glass"></i></div>
+            <h3>بحث فوري</h3>
+            <p>تحقق من بريدك الإلكتروني في ثوانٍ</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+            <h3>تحليل المخاطر</h3>
+            <p>تقييم مستوى خطورة التسريبات</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon"><i class="fas fa-shield-halved"></i></div>
+            <h3>تقرير مفصل</h3>
+            <p>تفاصيل كاملة عن كل تسريب</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon"><i class="fas fa-database"></i></div>
+            <h3>تحميل قواعد البيانات</h3>
+            <p>إمكانية تحميل قواعد البيانات المسربة</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="future-features">
+        <h2><i class="fas fa-rocket"></i> الميزات المستقبلية القادمة</h2>
+        <div class="features-grid">
+          <div class="feature-card premium">
+            <div class="feature-icon"><i class="fas fa-bell"></i></div>
+            <h3>تنبيهات فورية</h3>
+            <p>إشعارات فورية عند اكتشاف تسريبات جديدة لبريدك</p>
+          </div>
+          <div class="feature-card premium">
+            <div class="feature-icon"><i class="fas fa-shield"></i></div>
+            <h3>حماية متقدمة</h3>
+            <p>مراقبة مستمرة لجميع حساباتك على الإنترنت</p>
+          </div>
+          <div class="feature-card premium">
+            <div class="feature-icon"><i class="fas fa-unlock"></i></div>
+            <h3>كسر تشفير</h3>
+            <p>خدمة كسر وفك تشفير كلمات المرور المسربة</p>
+          </div>
+          <div class="feature-card premium">
+            <div class="feature-icon"><i class="fas fa-brain"></i></div>
+            <h3>ذكاء اصطناعي</h3>
+            <p>تحليل ذكي للبيانات وتنبؤات دقيقة للتسريبات المستقبلية</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="faq-section">
+      <h2><i class="fas fa-circle-question"></i> الأسئلة الشائعة</h2>
+      <div class="faq-container">
+        <!-- الأمان والخصوصية -->
+        <div class="faq-category">
+          <h3><i class="fas fa-lock"></i> الأمان والخصوصية</h3>
+          <div class="faq-items">
+            <details class="faq-item">
+              <summary>كيف يتم حماية بياناتي عند استخدام الموقع؟</summary>
+              <p>نستخدم تقنيات تشفير متقدمة لحماية بياناتك الشخصية. جميع عمليات البحث تتم عبر اتصال آمن ومشفر HTTPS، ولا نشارك بياناتك مع أي طرف ثالث.</p>
+            </details>
+            <details class="faq-item">
+              <summary>هل عملية البحث عن التسريبات آمنة؟</summary>
+              <p>نعم، عملية البحث آمنة تماماً. نستخدم خوارزميات تشفير متطورة للتحقق من البريد الإلكتروني دون تخزين أو مشاركة المعلومات الحساسة.</p>
+            </details>
+            <details class="faq-item">
+              <summary>هل يتم تخزين بريدي الإلكتروني في قواعد البيانات؟</summary>
+              <p>لا، لا نقوم بتخزين عناوين البريد الإلكتروني التي يتم البحث عنها. نحن نستخدم تقنيات التجزئة (Hashing) للتحقق من التسريبات دون الحاجة لتخزين البيانات.</p>
+            </details>
+          </div>
+        </div>
+
+        <!-- خدمات البحث -->
+        <div class="faq-category">
+          <h3><i class="fas fa-magnifying-glass"></i> خدمات البحث</h3>
+          <div class="faq-items">
+            <details class="faq-item">
+              <summary>ما الفرق بين البحث المجاني والبحث المتقدم؟</summary>
+              <p>البحث المجاني يوفر معلومات أساسية عن التسريبات، بينما يقدم البحث المتقدم تفاصيل شاملة، وإمكانية تحميل البيانات، وتنبيهات فورية عند اكتشاف تسريبات جديدة.</p>
+            </details>
+            <details class="faq-item">
+              <summary>كم عدد قواعد البيانات التي يتم البحث فيها؟</summary>
+              <p>نقوم بالبحث في مئات قواعد البيانات المسربة والتي يتم تحديثها باستمرار. نضيف قواعد بيانات جديدة بشكل أسبوعي لضمان تغطية شاملة.</p>
+            </details>
+            <details class="faq-item">
+              <summary>كيف يمكنني معرفة تفاصيل التسريب؟</summary>
+              <p>مع الترخيص المتقدم، ستتمكن من رؤية تفاصيل كاملة عن كل تسريب، بما في ذلك تاريخ التسريب، ومصدره، ونوع البيانات المسربة.</p>
+            </details>
+          </div>
+        </div>
+
+        <!-- الاشتراك والترخيص -->
+        <div class="faq-category">
+          <h3><i class="fas fa-credit-card"></i> الاشتراك والترخيص</h3>
+          <div class="faq-items">
+            <details class="faq-item">
+              <summary>ما هي مميزات الترخيص المدفوع؟</summary>
+              <p>يشمل الترخيص المدفوع: تفاصيل كاملة عن التسريبات، إمكانية تحميل قواعد البيانات، تنبيهات فورية، خدمة كسر التشفير، ودعم فني متميز.</p>
+            </details>
+            <details class="faq-item">
+              <summary>كيف يمكنني الحصول على ترخيص للبحث المتقدم؟</summary>
+              <p>يمكنك شراء الترخيص مباشرة من صفحة التسعير، حيث نقدم خطط مختلفة تناسب احتياجاتك.</p>
+            </details>
+            <details class="faq-item">
+              <summary>هل يمكنني تجربة البحث المتقدم قبل الشراء؟</summary>
+              <p>نعم، نوفر نسخة تجريبية محدودة من البحث المتقدم لمدة يوم واحد لتتمكن من تجربة المميزات قبل الشراء.</p>
+            </details>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="footer-section">
+      <div class="footer-content">
+        <div class="footer-main">
+          <div class="footer-brand">
+            <div class="footer-logo">
+              <img src="/fsociety.png" alt="fsociety logo">
+              <div class="footer-text">fsociety</div>
+            </div>
+            <div class="footer-description">
+              <p>نحن نقدم خدمة متكاملة للكشف عن تسريبات البيانات وحماية معلوماتك الشخصية. نستخدم تقنيات متقدمة للبحث في قواعد البيانات المسربة وتقديم تقارير مفصلة عن المخاطر المحتملة.</p>
+            </div>
+          </div>
+          
+          <div class="footer-stats">
+            <div class="stat-item">
+              <i class="fas fa-database"></i>
+              <div class="stat-info">
+                <span class="stat-value">700+</span>
+                <span class="stat-label">قاعدة بيانات</span>
+              </div>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-shield-alt"></i>
+              <div class="stat-info">
+                <span class="stat-value">20k+</span>
+                <span class="stat-label">فحص يومي</span>
+              </div>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-user-shield"></i>
+              <div class="stat-info">
+                <span class="stat-value">50K+</span>
+                <span class="stat-label">مستخدم نشط</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-social">
+          <div class="social-title">تواصل معنا</div>
+          <div class="social-links">
+            <a href="https://t.me/d0srr" target="_blank" class="social-link telegram">
+              <i class="fab fa-telegram"></i>
+              <span>Telegram</span>
+              <div class="social-hover">
+              </div>
+            </a>
+            <a href="https://github.com/fzrael" target="_blank" class="social-link github">
+              <i class="fab fa-github"></i>
+              <span>GitHub</span>
+              <div class="social-hover">
+
+              </div>
+            </a>
+            <a href="https://twitter.com/7b17" target="_blank" class="social-link twitter">
+              <i class="fab fa-twitter"></i>
+              <span>Twitter</span>
+              <div class="social-hover">
+
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="footer-nav">
+          <a href="/privacy-policy">سياسة الخصوصية</a>
+          <a href="/pricing">الأسعار</a>
+          <a href="/breaches">قواعد البيانات</a>
+        </div>
+        <div class="copyright">
+          <p>جميع الحقوق محفوظة &copy; 2024 fsociety</p>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+  <script>
+    function getBreachText(count) {
+      if (count === 0) return 'لا توجد تسريبات';
+      if (count === 1) return 'تسريب واحد';
+      if (count === 2) return 'تسريبين';
+      if (count >= 3 && count <= 10) return `${count} تسريبات`;
+      return `${count} تسريب`;
+    }
+
+    function flattenBreaches(breaches) {
+      if (!breaches) return [];
+      // إذا كانت المصفوفة متداخلة، نقوم بتسطيحها
+      return breaches.flat();
+    }
+
+    function formatBreachDetails(breach) {
+      return `
+        <div class="breach-detail">
+          <h3>${breach.breach}</h3>
+          <p class="breach-date">تاريخ التسريب: ${breach.xposed_date}</p>
+          <p class="breach-records">عدد السجلات المسربة: ${breach.xposed_records.toLocaleString()}</p>
+          <p class="breach-description">${breach.details}</p>
+          <div class="breach-meta">
+            <span class="tag">النطاق: ${breach.domain}</span>
+            <span class="tag">القطاع: ${breach.industry}</span>
+            <span class="tag">مستوى أمان كلمة المرور: ${breach.password_risk}</span>
+          </div>
+          <div class="exposed-data">
+            <p>البيانات المسربة:</p>
+            <div class="data-tags">
+              ${breach.xposed_data.split(';').map(data => `<span class="tag">${data}</span>`).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function formatAnalytics(analytics) {
+      if (!analytics) return '';
+      
+      const riskInfo = analytics.BreachMetrics.risk[0];
+      // تحديد مستوى الخطورة بناءً على الدرجة
+      let riskLevel = 'low';
+      if (riskInfo.risk_score > 10) {
+        riskLevel = 'high';
+      } else if (riskInfo.risk_score > 5) {
+        riskLevel = 'medium';
+      }
+
+      return `
+        <div class="analytics-section">
+          <h3>📊 تحليل المخاطر</h3>
+          <div class="risk-score">
+            <p>مستوى الخطورة: <span class="tag ${riskLevel}">${riskLevel === 'high' ? 'مرتفع' : riskLevel === 'medium' ? 'متوسط' : 'منخفض'}</span></p>
+            <p>درجة المخاطرة: ${riskInfo.risk_score}/10</p>
+          </div>
+          
+          <h3>🔒 قوة كلمات المرور المسربة</h3>
+          <div class="password-strength">
+            ${Object.entries(analytics.BreachMetrics.passwords_strength[0])
+              .filter(([_, value]) => value > 0)
+              .map(([type, count]) => `<span class="tag">${type}: ${count}</span>`).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    const form = document.getElementById('searchForm');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const button = form.querySelector('button');
+      button.classList.add('loading');
+      
+      const email = form.email.value;
+      const licenseKey = form.licenseKey.value;
+      
+      try {
+        // التحقق من وجود الترخيص
+        if (!licenseKey) {
+          Swal.fire({
+            title: 'خطأ!',
+            text: 'الرجاء إدخال مفتاح الترخيص للبحث المتقدم',
+            icon: 'error',
+            confirmButtonText: 'حسناً'
+          });
+          button.classList.remove('loading');
+          return;
+        }
+
+        // التحقق من صحة الترخيص
+        const licenseResponse = await fetch('/api/verify-license', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ licenseKey })
+        });
+        
+        const licenseData = await licenseResponse.json();
+        
+        if (!licenseData.valid) {
+          Swal.fire({
+            title: 'خطأ!',
+            text: licenseData.message,
+            icon: 'error',
+            confirmButtonText: 'حسناً'
+          });
+          button.classList.remove('loading');
+          return;
+        }
+        
+        // إجراء البحث المتقدم
+        const response = await fetch(`/search?email=${encodeURIComponent(email)}&deep=true&licenseKey=${encodeURIComponent(licenseKey)}`);
+        const data = await response.json();
+        
+        if (data.error) {
+          Swal.fire({
+            title: 'خطأ!',
+            text: data.error,
+            icon: 'error',
+            confirmButtonText: 'حسناً',
+            background: '#1a1a1a',
+            color: '#fff'
+          });
+        } else if (data.result && data.result.breaches && data.result.breaches.length > 0) {
+          const breaches = flattenBreaches(data.result.breaches);
+          let htmlContent = `
+            <div class="breach-info">
+              <p>تم العثور على بريدك في ${getBreachText(breaches.length)}:</p>
+              <div class="breach-list">
+                ${breaches.map(breach => `<div class="breach-item">${breach}</div>`).join('')}
+              </div>
+            </div>
+          `;
+
+          if (data.analytics) {
+            htmlContent += `
+              <div class="analytics-info">
+                ${formatAnalytics(data.analytics)}
+                <div class="detailed-breaches">
+                  <h3>📑 تفاصيل التسريبات</h3>
+                  ${data.analytics.ExposedBreaches.breaches_details.map(formatBreachDetails).join('')}
+                </div>
+              </div>
+            `;
+          }
+
+          Swal.fire({
+            title: '⚠️ تحذير: تم اختراق بريدك الإلكتروني!',
+            html: htmlContent,
+            icon: 'warning',
+            confirmButtonText: 'فهمت',
+            background: '#1e1e1e',
+            customClass: {
+              popup: 'swal-dark'
+            },
+            footer: '<div class="modal-footer" style="display: flex; flex-direction: column; gap: 1rem;">' +
+                    '<a href="/download" class="download-btn" style="background: rgba(0, 230, 118, 0.1); color: var(--primary-color); border: 1px solid var(--primary-color); padding: 0.6rem 1rem; border-radius: 6px; text-decoration: none; text-align: center; font-weight: 500; transition: all 0.3s ease; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; width: auto; font-size: 0.9rem; margin: 0 auto;">' +
+                    '<i class="fas fa-download" style="font-size: 0.9rem;"></i>تحميل FsocietyData</a>' +
+                    '</div>'
+          });
+        } else {
+          Swal.fire({
+            title: '✅ رائع! بريدك آمن',
+            text: 'لم يتم العثور على بريدك في أي تسريبات معروفة',
+            icon: 'success',
+            confirmButtonText: 'حسناً'
+          });
+        }
+      } catch (error) {
+        Swal.fire({
+          title: 'خطأ!',
+          text: 'حدث خطأ أثناء البحث',
+          icon: 'error',
+          confirmButtonText: 'حسناً'
+        });
+      } finally {
+        button.classList.remove('loading');
+      }
+    });
+
+    document.getElementById('freeSearchLink').addEventListener('click', async (e) => {
+      e.preventDefault();
+      
+      const { value: email } = await Swal.fire({
+        icon: 'info',
+        title: 'fsocietyFree',
+        input: 'email',
+        // inputLabel: 'أدخل بريدك الإلكتروني',
+        inputPlaceholder: 'أدخل بريدك الإلكتروني',
+        confirmButtonText: 'بحث',
+        showCloseButton: true,
+        background: '#1a1a1a',
+        color: '#fff',
+        customClass: {
+          popup: 'swal2-dark',
+          input: 'dark-input'
+        },
+        inputValidator: (value) => {
+          if (!value) {
+            return 'الرجاء إدخال بريد إلكتروني';
+          }
+        }
+      });
+
+      if (email) {
+        try {
+          const response = await fetch(`/free-search?email=${encodeURIComponent(email)}`);
+          const data = await response.json();
+          
+          if (data.error) {
+            Swal.fire({
+              title: 'خطأ!',
+              text: data.error,
+              icon: 'error',
+              confirmButtonText: 'حسناً',
+              background: '#1a1a1a',
+              color: '#fff'
+            });
+          } else {
+            if (data.breachCount > 0) {
+              Swal.fire({
+                title: '⚠️ تحذير',
+                html: `تم العثور على بريدك في <span style="color: #00a67c; font-weight: bold;">${data.breachCount}</span> مواقع`,
+                icon: 'warning',
+                confirmButtonText: 'فهمت',
+                footer: '<a href="/pricing" class="swal2-footer-link">يرجى شراء الترخيص للبحث المتقدم</a>',
+                background: '#1a1a1a',
+                color: '#fff',
+                customClass: {
+                  popup: 'swal2-dark'
+                }
+              });
+            } else {
+              Swal.fire({
+                title: '✅ رائع! بريدك آمن',
+                text: 'لم يتم العثور على بريدك في أي تسريبات معروفة',
+                icon: 'success',
+                confirmButtonText: 'حسناً',
+                background: '#1a1a1a',
+                color: '#fff'
+              });
+            }
+          }
+        } catch (error) {
+          Swal.fire({
+            title: 'خطأ!',
+            text: 'حدث خطأ أثناء البحث',
+            icon: 'error',
+            confirmButtonText: 'حسناً',
+            background: '#1a1a1a',
+            color: '#fff'
+          });
+        }
+      }
+    });
+
+    // إزالة تأثير الضباب بعد انتهاء الانيميشن
+    setTimeout(() => {
+      document.querySelector('.container').classList.add('clear');
+    }, 3000);
+  </script>
+
+  <style>
+    .faq-section {
+      padding: 4rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .faq-section h2 {
+      text-align: center;
+      margin-bottom: 3rem;
+      color: #fff;
+      font-size: 2.5rem;
+    }
+
+    .faq-container {
+      display: grid;
+      gap: 2rem;
+    }
+
+    .faq-category {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 2rem;
+      transition: all 0.3s ease;
+    }
+
+    .faq-category:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    .faq-category h3 {
+      color: #00a67c;
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+    }
+
+    .faq-items {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .faq-item {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .faq-item summary {
+      padding: 1rem;
+      cursor: pointer;
+      color: #fff;
+      font-weight: 500;
+      list-style: none;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .faq-item summary:hover {
+      background: rgba(0, 166, 124, 0.1);
+    }
+
+    .faq-item summary::after {
+      content: '+';
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #00a67c;
+      font-size: 1.2rem;
+    }
+
+    .faq-item[open] summary::after {
+      content: '-';
+    }
+
+    .faq-item p {
+      padding: 1rem;
+      color: #ccc;
+      line-height: 1.6;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    @media (min-width: 768px) {
+      .faq-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .feature-icon i {
+      font-size: 1.8rem;
+      color: var(--primary-color);
+      filter: drop-shadow(0 0 5px rgba(0, 230, 118, 0.3));
+    }
+
+    .feature-card:hover .feature-icon i {
+      transform: scale(1.1);
+      filter: drop-shadow(0 0 8px rgba(0, 230, 118, 0.5));
+    }
+
+    .license-icon i {
+      font-size: 1.2rem;
+      color: var(--primary-color);
+    }
+
+    h2 i, h3 i {
+      margin-left: 8px;
+      color: var(--primary-color);
+    }
+
+    .premium-btn i {
+      margin-right: 8px;
+      font-size: 0.9rem;
+    }
+
+    /* تنسيقات Footer الجديدة */
+    .footer-section {
+      margin-top: 4rem;
+      margin-bottom: -2rem;
+      padding: 4rem 0 2rem;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(0, 230, 118, 0.05) 100%);
+      position: relative;
+      width: 100vw;
+      left: 50%;
+      right: 50%;
+      margin-left: -50vw;
+      margin-right: -50vw;
+      box-sizing: border-box;
+    }
+
+    /* تعديل body لضمان عدم وجود فراغات */
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    .footer-content {
+      max-width: 1000px; /* تقليل العرض الأقصى */
+      margin: 0 auto;
+      position: relative;
+      z-index: 4;
+      width: 100%;
+      padding: 0 1.5rem;
+      box-sizing: border-box;
+    }
+
+    .footer-main {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr; /* تعديل نسب الأعمدة */
+      gap: 2rem; /* تقليل المسافة بين الأعمدة */
+      margin-bottom: 2rem;
+      width: 100%;
+    }
+
+    .footer-brand {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      width: 100%;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .footer-logo img {
+      width: 50px; /* تصغير حجم الشعار */
+      height: auto;
+      filter: brightness(0) invert(1);
+      flex-shrink: 0;
+    }
+
+    .footer-text {
+      font-size: 1.5rem; /* تصغير حجم النص */
+      font-weight: 700;
+      color: var(--primary-color);
+      text-transform: lowercase;
+      letter-spacing: 3px;
+      text-shadow: 0 0 10px rgba(0, 230, 118, 0.3);
+      white-space: nowrap;
+    }
+
+    .footer-description {
+      font-size: 0.95rem; /* تصغير حجم النص */
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .footer-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      width: 100%;
+    }
+
+    .stat-item {
+      padding: 1rem; /* تقليل المساحة الداخلية */
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .stat-item:hover {
+      transform: translateY(-5px);
+      background: rgba(0, 230, 118, 0.1);
+      box-shadow: 0 5px 15px rgba(0, 230, 118, 0.2);
+    }
+
+    .stat-item i {
+      font-size: 1.5rem; /* تصغير حجم الأيقونات */
+    }
+
+    .stat-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stat-value {
+      font-size: 1.2rem; /* تصغير حجم النص */
+    }
+
+    .stat-label {
+      font-size: 0.8rem; /* تصغير حجم النص */
+    }
+
+    .footer-social {
+      text-align: center;
+      margin-bottom: 3rem;
+      width: 100%;
+    }
+
+    .social-title {
+      color: var(--primary-color);
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+      font-weight: 500;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .social-link {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 0.8rem 1.5rem; /* تقليل المساحة الداخلية */
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      color: var(--primary-color);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      overflow: hidden;
+      min-width: 160px; /* تقليل العرض الأدنى */
+      justify-content: center;
+    }
+
+    .social-link::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(0, 230, 118, 0.1), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.5s ease;
+    }
+
+    .social-link:hover::before {
+      transform: translateX(100%);
+    }
+
+    .social-link i {
+      font-size: 1.2rem; /* تصغير حجم الأيقونات */
+    }
+
+    .social-hover {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 230, 118, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+
+    .social-link:hover .social-hover {
+      opacity: 1;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 2rem 0;
+      margin-bottom: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      width: 100%;
+    }
+
+    .footer-nav {
+      display: flex;
+      gap: 1.5rem; /* تقليل المسافة بين الروابط */
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .footer-nav a {
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+      font-size: 0.9rem; /* تصغير حجم النص */
+    }
+
+    .footer-nav a:hover {
+      color: var(--primary-color);
+    }
+
+    .copyright {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      color: rgba(255, 255, 255, 0.6);
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+      font-size: 0.9rem; /* تصغير حجم النص */
+    }
+
+    .security-badge {
+      display: none;
+    }
+
+    .security-badge i {
+      display: none;
+    }
+
+    @media (max-width: 1200px) {
+      .container {
+        max-width: 900px;
+      }
+
+      .footer-content {
+        max-width: 900px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .footer-section {
+        padding: 3rem 0 1.5rem;
+        margin-bottom: -1.5rem;
+      }
+
+      .footer-content {
+        padding: 0 1rem;
+      }
+
+      .footer-main {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .social-link {
+        min-width: unset;
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .footer-section {
+        padding: 2rem 0 1rem;
+        margin-bottom: -1rem;
+      }
+
+      .footer-content {
+        padding: 0 1rem;
+      }
+
+      .footer-logo img {
+        width: 45px;
+      }
+
+      .footer-text {
+        font-size: 1.3rem;
+      }
+
+      .stat-item {
+        padding: 0.8rem;
+      }
+
+      .stat-value {
+        font-size: 1.1rem;
+      }
+
+      .stat-label {
+        font-size: 0.75rem;
+      }
+    }
+  </style>
+</body>
+</html>
